@@ -1,1 +1,11 @@
-<p>Me he rifado!</p>
+<div (window:resize)="onResize($event)" class="main-div">
+    <mat-card class="main-card">
+        <p>Me he rifado!</p>
+        <form class="main-form">
+            <mat-form-field class="main-input-full-width">
+                <input matInput #message maxlength="256" placeholder="Example: java nullpointerexception json request">
+                <mat-hint align="start"><strong>Try to use key words</strong> </mat-hint>
+            </mat-form-field>
+        </form>
+    </mat-card>
+</div>

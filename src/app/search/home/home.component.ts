@@ -12,4 +12,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public onResize(event:any) {
+    console.log(event.target.innerWidth);
+  }
+
 }
