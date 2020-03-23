@@ -15,6 +15,7 @@ import { MatTabsModule } from '@angular/material/tabs'
 import { MatSelectModule } from '@angular/material/select'
 import { MatStepperModule } from '@angular/material/stepper'
 import { MatInputModule } from '@angular/material/input'
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatRadioModule } from '@angular/material/radio'
@@ -58,6 +59,8 @@ import { MatGridListModule } from '@angular/material/grid-list'
     MatTooltipModule, 
     MatChipsModule, 
     MatGridListModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     HttpClientModule,
@@ -85,6 +88,8 @@ import { MatGridListModule } from '@angular/material/grid-list'
     MatTooltipModule,
     MatChipsModule,
     MatGridListModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class CoreModule { }

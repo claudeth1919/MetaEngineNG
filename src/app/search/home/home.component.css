@@ -5,16 +5,20 @@
   align-items: center;
 }
 
+.main-input{
+    line-height: 3.4em;
+    font-size: 18px;
+}
 .main-form{
     min-width: 150px;
-    max-width: 500px;
     width: 100%;
 }
 
 .main-input-full-width{
-    width: 100%;
+    width: 100% !important;
 }
 
 .main-card{
-    width: 80%;
+    width: 90%;
+    text-align:center;
 }
