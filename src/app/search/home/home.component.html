@@ -1,13 +1,19 @@
 <div (window:resize)="onResize($event)" class="main-div">
     <mat-card class="main-card">
-        <mat-card-title>META BUSCADOR</mat-card-title>
+        <mat-card-title>What is your question?</mat-card-title>
         <form class="main-form" [formGroup]="searchForm" (ngSubmit)="searchAnswers()">
             <mat-form-field class="main-input-full-width">
                 <mat-icon matSuffix>search</mat-icon>
                 <input matInput #message formControlName="searchWords" maxlength="400" minlength="5" placeholder="Search" autocomplete="false" class="main-input" required>
                 <mat-hint align="start"><strong>Try to use key words</strong> </mat-hint>
             </mat-form-field>
-            <button mat-raised-button color="primary" type="submit">Buscar</button>
+            <div class="">
+                <div class="" style="text-align: right;">
+                    <mat-slide-toggle (change)="showAdvancedOptions()" [checked]="areAdvancedOptionsDisplayed">Advanced Options</mat-slide-toggle>
+                </div>
+                <p *ngIf="areAdvancedOptionsDisplayed">Hola</p>
+            </div>
+            <button mat-raised-button color="primary" type="submit">Search</button>
         </form>
     </mat-card>
 </div>

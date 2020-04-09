@@ -3,6 +3,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #afafaf;
+  background-image: url("/../../../assets/img/provider-icons.png");
+  -moz-user-select: none; 
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none; 
 }
 
 .main-input{
@@ -21,4 +27,5 @@
 .main-card{
     width: 90%;
     text-align:center;
+    opacity: 0.77;
 }

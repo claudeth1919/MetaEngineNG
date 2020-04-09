@@ -13,6 +13,6 @@ import { AnswersListComponent } from './answers-list/answers-list.component';
     CommonModule,
     CoreModule,
     SearchRoutingModule,
-  ]
+  ],
 })
 export class SearchModule { }

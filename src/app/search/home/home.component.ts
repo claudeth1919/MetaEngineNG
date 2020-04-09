@@ -9,12 +9,17 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   searchForm: FormGroup;
+  areAdvancedOptionsDisplayed: boolean = false;
   constructor(private fb: FormBuilder, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({
       searchWords: ['', Validators.required]
     });
+  }
+
+  showAdvancedOptions(){
+    this.areAdvancedOptionsDisplayed = !this.areAdvancedOptionsDisplayed;
   }
 
   ngOnDestroy() {
