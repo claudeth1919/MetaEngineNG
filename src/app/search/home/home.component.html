@@ -1,19 +1,48 @@
 <div (window:resize)="onResize($event)" class="main-div">
     <mat-card class="main-card">
-        <mat-card-title>What is your question?</mat-card-title>
+        <br>
+        <mat-card-title>Just type your error, we'll take care of the rest!</mat-card-title>
+        
         <form class="main-form" [formGroup]="searchForm" (ngSubmit)="searchAnswers()">
-            <mat-form-field class="main-input-full-width">
+            <mat-form-field class="main-input-full-width" *ngIf="!areAdvancedOptionsDisplayed">
                 <mat-icon matSuffix>search</mat-icon>
-                <input matInput #message formControlName="searchWords" maxlength="400" minlength="5" placeholder="Search" autocomplete="false" class="main-input" required>
+                <input matInput #message formControlName="searchWords" maxlength="400" minlength="5" placeholder="Search" autocomplete="false" class="main-input">
                 <mat-hint align="start"><strong>Try to use key words</strong> </mat-hint>
+                <mat-error *ngIf="searchWords.hasError('required')">Required field</mat-error>
             </mat-form-field>
-            <div class="">
-                <div class="" style="text-align: right;">
-                    <mat-slide-toggle (change)="showAdvancedOptions()" [checked]="areAdvancedOptionsDisplayed">Advanced Options</mat-slide-toggle>
-                </div>
-                <p *ngIf="areAdvancedOptionsDisplayed">Hola</p>
-            </div>
-            <button mat-raised-button color="primary" type="submit">Search</button>
+
+            <mat-grid-list cols="3" rowHeight="70px" *ngIf="areAdvancedOptionsDisplayed">
+                <ng-container *ngFor="let rowForm of advancedOptions.controls; let indexForm = index; last as isLast" [formGroup]="rowForm">
+                    <mat-grid-tile colspan="1">
+                        <mat-form-field class="advanced-input">
+                            <mat-label>Categories</mat-label>
+                            <mat-select formControlName="category">
+                                <mat-option *ngFor="let category of categories" [value]="category">
+                                    {{category}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="2">
+                        <mat-form-field class="advanced-input">
+                            <mat-label>Enter search term</mat-label>
+                            <input matInput placeholder="Ex. null pointer exception" autocomplete="false" formControlName="term">
+                            <mat-error *ngIf="rowForm.get('term').hasError('required')">Required field</mat-error>
+                        </mat-form-field>
+                        <button mat-icon-button color="primary" (click)="addSearchInput()" *ngIf="isLast && !(OPTIONS_LIMIT_NUMBER == indexForm)" matTooltip="Add Input" matTooltipPosition="above">
+                            <span class="material-icons">control_point</span>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="removeSearchInput(indexForm)" *ngIf="!isLast || OPTIONS_LIMIT_NUMBER == indexForm" matTooltip="Remove Input" matTooltipPosition="above">
+                            <span class="material-icons">remove_circle_outline</span>
+                        </button>
+                    </mat-grid-tile>
+                </ng-container>
+                
+            </mat-grid-list>
+            <button mat-raised-button type="submit">Search</button>
         </form>
+        <div class="" style="text-align: right;">
+            <mat-slide-toggle [(ngModel)]="areAdvancedOptionsDisplayed">Advanced Options</mat-slide-toggle>
+        </div>
     </mat-card>
 </div>
