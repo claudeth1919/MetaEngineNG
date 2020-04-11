@@ -10,11 +10,11 @@ export class MyHttpRequestService {
   constructor(private httpClient: HttpClient) { }
 
   search(searchWords: string): any {
-    return this.httpClient.get<any>(`${this.api}/${searchWords}`);
+    return this.httpClient.get<any>(`${this.api}/answers/${searchWords}`);
   }
 
   advanceSearch(data: any): any {
-    return this.httpClient.get<any>(`${this.api}`, data);
+    return this.httpClient.get<any>(`${this.api}/advance/answers`, data);
   }
 
 }
