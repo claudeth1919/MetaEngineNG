@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { MyHttpRequestService } from '../service/my-http-request.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,7 @@ export class HomeComponent implements OnInit {
   public TAG_CATEGORY = this.categories[1];
 
   
-  constructor(private fb: FormBuilder, private route: ActivatedRoute) { }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private myHttp: MyHttpRequestService) { }
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({
@@ -53,8 +54,41 @@ export class HomeComponent implements OnInit {
   }
 
   public searchAnswers(){
+    if(!this.isFormValid()) return ;
+
+    if (!this.areAdvancedOptionsDisplayed){
+      this.myHttp.search(this.searchWords.value).subscribe(res => {
+        console.log(res);
+      }, err => {
+        console.log(err);
+      });
+    }
+    else{
+      let tags = [];
+      let textErrors = [];
+      this.advancedOptions.controls.forEach(item => {
+        if (item.get('category').value == this.TAG_CATEGORY) tags.push(item.get('term').value);
+        if (item.get('category').value == this.ERROR_TEXT_CATEGORY) textErrors.push(item.get('term').value);
+      });
+      let data = { tags: tags, textErrors: textErrors};
+      this.myHttp.advanceSearch(data).subscribe(res => {
+        console.log(res);
+      }, err => {
+        console.log(err);
+      });
+    }
+
     console.log(this.searchForm.get("searchWords").value);
     console.log(this.searchForm.get("advancedOptions").value);
+  }
+
+  private isFormValid(): boolean{
+    if (!this.areAdvancedOptionsDisplayed && this.searchWords.invalid) return false;
+    else if (this.areAdvancedOptionsDisplayed){
+      let tempItem = this.advancedOptions.controls.find(item => item.get('term').invalid);
+      if (tempItem!=null) return false;
+    }
+    return true;
   }
 
 }
