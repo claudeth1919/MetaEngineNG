@@ -5,7 +5,7 @@ import { AnswersListComponent } from './answers-list/answers-list.component';
 
 const routes: Routes = [
     { path: 'home', component: HomeComponent },
-    { path: 'answers', component: AnswersListComponent },
+    { path: 'answers/:searchWords', component: AnswersListComponent },
     { path: '', component: HomeComponent },
 ];
 

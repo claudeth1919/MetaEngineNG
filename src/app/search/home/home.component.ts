@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MyHttpRequestService } from '../service/my-http-request.service';
+import { RedirectService } from '../service/redirect.service';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,7 @@ export class HomeComponent implements OnInit {
   public TAG_CATEGORY = this.categories[1];
 
   
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private myHttp: MyHttpRequestService) { }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect:RedirectService ) { }
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({
@@ -57,11 +58,7 @@ export class HomeComponent implements OnInit {
     if(!this.isFormValid()) return ;
 
     if (!this.areAdvancedOptionsDisplayed){
-      this.myHttp.search(this.searchWords.value).subscribe(res => {
-        console.log(res);
-      }, err => {
-        console.log(err);
-      });
+      this.redirect.redirectToSearch(this.searchWords.value);
     }
     else{
       let tags = [];
@@ -70,11 +67,7 @@ export class HomeComponent implements OnInit {
         if (item.get('category').value == this.TAG_CATEGORY) tags.push(item.get('term').value);
         if (item.get('category').value == this.ERROR_TEXT_CATEGORY) textErrors.push(item.get('term').value);
       });
-      this.myHttp.advanceSearch(textErrors, tags).subscribe(res => {
-        console.log(res);
-      }, err => {
-        console.log(err);
-      });
+      this.redirect.redirectToadvanceSearch(textErrors, tags);
     }
 
     console.log(this.searchForm.get("searchWords").value);
