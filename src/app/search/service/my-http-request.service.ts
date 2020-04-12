@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -13,8 +13,16 @@ export class MyHttpRequestService {
     return this.httpClient.get<any>(`${this.api}/answers/${searchWords}`);
   }
 
-  advanceSearch(data: any): any {
-    return this.httpClient.get<any>(`${this.api}/advance/answers`, data);
+  advanceSearch(textErrors: any, tags: any): any {
+    let params = new HttpParams();
+    textErrors.forEach(element => {
+      params = params.append('errorText', element);
+    });
+    tags.forEach(element => {
+      params = params.append('tag', element);
+    });
+    //params = params.append('tag', tags.join('|'));
+    return this.httpClient.get<any>(`${this.api}/advance/answers`, {params : params});
   }
 
 }

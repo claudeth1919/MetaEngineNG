@@ -70,8 +70,7 @@ export class HomeComponent implements OnInit {
         if (item.get('category').value == this.TAG_CATEGORY) tags.push(item.get('term').value);
         if (item.get('category').value == this.ERROR_TEXT_CATEGORY) textErrors.push(item.get('term').value);
       });
-      let data = { tags: tags, textErrors: textErrors};
-      this.myHttp.advanceSearch(data).subscribe(res => {
+      this.myHttp.advanceSearch(textErrors, tags).subscribe(res => {
         console.log(res);
       }, err => {
         console.log(err);
