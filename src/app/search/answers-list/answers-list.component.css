@@ -1,0 +1,22 @@
+.text{
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.origin-stackoverflow-image{
+  background-image: url('/../../../assets/img/so.png');
+  background-size: cover;
+}
+
+.origin-github-image{
+  background-image: url('/../../../assets/img/github.png');
+  background-size: cover;
+}
+
+.origin-microsoft-image{
+  background-image: url('/../../../assets/img/windows.png');
+  background-size: cover;
+}

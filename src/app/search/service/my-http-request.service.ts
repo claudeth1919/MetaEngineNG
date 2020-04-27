@@ -11,11 +11,28 @@ export class MyHttpRequestService {
   
   constructor(private httpClient: HttpClient) { }
 
-  search(searchWords: string): any {
+  completeSearch(searchWords: string): any {
     return this.httpClient.get<any>(`${this.api}/answers/${searchWords}`);
   }
 
+  soSearch(searchWords: string): any {
+    return this.httpClient.get<any>(`${this.api}/answers/so/${searchWords}`);
+  }
+
+  githubSearch(searchWords: string): any {
+    return this.httpClient.get<any>(`${this.api}/answers/github/${searchWords}`);
+  }
+
+  microsoftSearch(searchWords: string): any {
+    return this.httpClient.get<any>(`${this.api}/answers/microsoft/${searchWords}`);
+  }
+
   advanceSearch(textErrors: any, tags: any): any {
+    let params = this.getParamSearchFormat(textErrors, tags);
+    return this.httpClient.get<any>(`${this.api}/advance/answers`, { params: params });
+  }
+
+  private getParamSearchFormat(textErrors: any, tags: any){
     let params = new HttpParams();
     textErrors.forEach(element => {
       params = params.append('errorText', element);
@@ -24,7 +41,7 @@ export class MyHttpRequestService {
       params = params.append('tag', element);
     });
     //params = params.append('tag', tags.join('|'));
-    return this.httpClient.get<any>(`${this.api}/advance/answers`, { params: params });
+    return params;
   }
 
 }

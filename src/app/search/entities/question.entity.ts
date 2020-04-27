@@ -1,8 +1,10 @@
 import { Answer } from './answers.entity';
 import { Tag } from './tag.entity';
+import { Origin } from './origin.entity';
 
 export class Question {
   public id :string;
+  public origin: Origin;
   public originId :string;
   public elementId: string;
   public answerCount: number;

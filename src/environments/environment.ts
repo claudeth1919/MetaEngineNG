@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   api: {
-    search: "https://192.168.1.113:45455/api/v1/search",
-    answer: "https://192.168.1.113:45455/api/v1/answer"
+    search: "https://192.168.1.74:45455/api/v1/search",
+    answer: "https://192.168.1.74:45455/api/v1/answer"
   }
 };
 
