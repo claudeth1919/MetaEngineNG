@@ -2,13 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { SearchedItem } from '../entities/searchedItem.entity';
 import { MyHttpRequestService } from '../service/my-http-request.service';
-//import { NgxPaginationModule } from 'ngx-pagination';
-
-enum OriginEnum {
-  STACK_OVERFLOW = 0,
-  NET = 1,
-  GITHUB = 2
-}
+import { RedirectService } from '../service/redirect.service';
+import { OriginEnum } from '../service/common';
 
 @Component({
   selector: 'app-answers-list',
@@ -26,7 +21,7 @@ export class AnswersListComponent implements OnInit {
   public page: number = 1;
   public isLoading:boolean = true;
 
-  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService) { }
+  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService) { }
 
   ngOnInit(): void {
     this.searchWords = this.route.snapshot.paramMap.get("searchWords");
@@ -38,7 +33,7 @@ export class AnswersListComponent implements OnInit {
     }, err => {
       console.log(err);
     });
-
+/*
     this.myHttp.bingSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
@@ -55,7 +50,7 @@ export class AnswersListComponent implements OnInit {
       console.log(err);
     });
 
-    /*
+    
     this.myHttp.githubSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItem = this.searchedItem.concat(res);
@@ -63,7 +58,7 @@ export class AnswersListComponent implements OnInit {
     }, err => {
       console.log(err);
     });
-    */
+    
 
     this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
@@ -72,7 +67,18 @@ export class AnswersListComponent implements OnInit {
     }, err => {
       console.log(err);
     });
-    
+    */
+    this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
+      console.log(res);
+      this.searchedItems = this.searchedItems.concat(res);
+      this.isLoading = false;
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  public redirectToAnswer(originReference: number, questionId){
+    this.redirect.redirectToAnswer(originReference, questionId);
   }
 
 

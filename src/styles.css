@@ -2,3 +2,40 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.text{
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.has-text-centered{
+  text-align: center;
+}
+
+.origin-0-image{
+  background-image: url('/../../../assets/img/so.png');
+  background-size: cover;
+}
+
+.origin-1-image{
+  background-image: url('/../../../assets/img/windows.png');
+  background-size: cover;
+}
+
+.origin-2-image{
+  background-image: url('/../../../assets/img/github.png');
+  background-size: cover;
+}
+
+.answers-mark{
+  background-image: url('/../../../assets/img/code.png');
+  background-size: cover;
+}
+
+mat-card-title{
+    margin-top: 9.2px;
+}

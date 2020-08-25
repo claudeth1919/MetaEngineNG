@@ -10,12 +10,12 @@
   </mat-grid-tile>
 </mat-grid-list>
 
-<ng-container *ngFor="let searchedItem of searchedItems | paginate: { id: 'index-page', itemsPerPage: 10, currentPage: page }">
+<ng-container *ngFor="let searchedItem of searchedItems | paginate: { id: 'index-page', itemsPerPage: 7, currentPage: page }">
     <mat-list-item>
         <mat-card>
             <mat-card-header>
-                <div mat-card-avatar class="origin-{{searchedItem.originReference}}-image"></div>
-                <mat-card-title>{{searchedItem.title}}</mat-card-title>
+                <div mat-card-avatar (click)="redirectToAnswer(searchedItem.originReference, searchedItem.questionId)" class="origin-{{searchedItem.originReference}}-image"></div>
+                <mat-card-title (click)="redirectToAnswer(searchedItem.originReference, searchedItem.questionId)">{{searchedItem.title}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <div mat-line>{{searchedItem.content}}</div> 

@@ -1,0 +1,33 @@
+<div class ="main-container">
+    <mat-card id="question-container">
+        <mat-card-header>
+            <div mat-card-avatar class="origin-{{originReference}}-image"></div>
+            <mat-card-title>{{question.title}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <br />
+            <div mat-line [innerHTML]="question.body"></div>
+        </mat-card-content>
+    </mat-card>
+    <br />
+    <mat-card>
+        <mat-card-header>
+            <div mat-card-avatar class="answers-mark"></div>
+            <mat-card-title>Respuestas ({{getAnswersAmount()}})</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <br />
+            <div *ngFor="let answer of question.answers">
+                <div class="answer-container">
+                    <div *ngIf="isTheBest" class="is-best-mark">
+                        <img src="/assets/img/best-answer-mark.png" alt="Best Answer" width="40px">
+                    </div>
+                    <div mat-line [innerHTML]="answer.body" class="answer-item"></div>
+                </div>
+                <br />
+                <br />
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+</div>
