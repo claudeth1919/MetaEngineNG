@@ -11,8 +11,12 @@ export class MyHttpRequestService {
   
   constructor(private httpClient: HttpClient) { }
 
-  completeSearch(searchWords: string): any {
-    return this.httpClient.get<any>(`${this.api}/answers/${searchWords}`);
+  googleSearch(searchWords: string): any {
+    return this.httpClient.get<any>(`${this.api}/answers/google/${searchWords}`);
+  }
+
+  bingSearch(searchWords: string): any {
+    return this.httpClient.get<any>(`${this.api}/answers/bing/${searchWords}`);
   }
 
   soSearch(searchWords: string): any {
@@ -25,6 +29,10 @@ export class MyHttpRequestService {
 
   microsoftSearch(searchWords: string): any {
     return this.httpClient.get<any>(`${this.api}/answers/microsoft/${searchWords}`);
+  }
+
+  completeSearch(searchWords: string): any {
+    return this.httpClient.get<any>(`${this.api}/answers/${searchWords}`);
   }
 
   advanceSearch(textErrors: any, tags: any): any {

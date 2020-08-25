@@ -29,7 +29,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [],
@@ -63,6 +63,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSlideToggleModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
   ],
   exports: [
     HttpClientModule,
@@ -93,6 +94,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSlideToggleModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
   ]
 })
 export class CoreModule { }

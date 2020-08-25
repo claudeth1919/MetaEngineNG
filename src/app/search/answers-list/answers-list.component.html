@@ -1,20 +1,30 @@
-<ng-container *ngFor="let question of questions">
+<mat-grid-list cols="3" rowHeight="2:1" *ngIf="isLoading">
+  <mat-grid-tile>
+  
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-spinner></mat-spinner>
+  </mat-grid-tile>
+  <mat-grid-tile>
+
+  </mat-grid-tile>
+</mat-grid-list>
+
+<ng-container *ngFor="let searchedItem of searchedItems | paginate: { id: 'index-page', itemsPerPage: 10, currentPage: page }">
     <mat-list-item>
         <mat-card>
             <mat-card-header>
-                <div mat-card-avatar class="origin-{{question.origin.name}}-image"></div>
-                <mat-card-title>{{question.title}}</mat-card-title>
+                <div mat-card-avatar class="origin-{{searchedItem.originReference}}-image"></div>
+                <mat-card-title>{{searchedItem.title}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <ng-container *ngFor="let answer of question.answers ; last as lastOne">
-                    <mat-list-item>
-                        <div mat-line class="text">{{answer.bodyWithoutHTML}}</div>
-                        <!-- <div mat-line [innerHTML]="answer.body"></div> --> 
-                    </mat-list-item>
-                    <mat-divider *ngIf="!lastOne"></mat-divider>
-                </ng-container>
+                <div mat-line>{{searchedItem.content}}</div> 
             </mat-card-content>
         </mat-card>
     </mat-list-item>
     <mat-divider></mat-divider>
 </ng-container>
+
+<div class="has-text-centered">
+    <pagination-controls id="index-page" (pageChange)="page = $event" autoHide="true" responsive="true"></pagination-controls>
+</div>
