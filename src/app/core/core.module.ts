@@ -30,9 +30,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [LoadingComponent],
   imports: [
     CommonModule,
     MatSliderModule,
@@ -95,6 +96,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
+  ],
+  entryComponents: [
+    LoadingComponent,
   ]
 })
 export class CoreModule { }

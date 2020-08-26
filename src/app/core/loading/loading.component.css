@@ -1,0 +1,10 @@
+.hide{
+  display: none !important;
+}
+
+
+.mydialog{
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  overflow: hidden !important;
+}

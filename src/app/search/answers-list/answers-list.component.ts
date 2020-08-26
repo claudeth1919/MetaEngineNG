@@ -4,6 +4,7 @@ import { SearchedItem } from '../entities/searchedItem.entity';
 import { MyHttpRequestService } from '../service/my-http-request.service';
 import { RedirectService } from '../service/redirect.service';
 import { OriginEnum } from '../service/common';
+import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-answers-list',
@@ -19,34 +20,37 @@ export class AnswersListComponent implements OnInit {
   public GITHUB = OriginEnum.GITHUB;
 
   public page: number = 1;
-  public isLoading:boolean = true;
 
-  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService) { }
+  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService) { }
 
   ngOnInit(): void {
+    this.loading.show();
     this.searchWords = this.route.snapshot.paramMap.get("searchWords");
     console.log(this.searchWords);
     this.myHttp.googleSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
-      this.isLoading = false;
+      this.loading.hide();
     }, err => {
+      this.loading.hide();
       console.log(err);
     });
 /*
     this.myHttp.bingSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
-      this.isLoading = false;
+      this.loading.hide();
     }, err => {
+      this.loading.hide();
       console.log(err);
     });
     
     this.myHttp.soSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
-      this.isLoading = false;
+      this.loading.hide();
     }, err => {
+      this.loading.hide();
       console.log(err);
     });
 
@@ -54,8 +58,9 @@ export class AnswersListComponent implements OnInit {
     this.myHttp.githubSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItem = this.searchedItem.concat(res);
-      this.isLoading = false;
+      this.loading.hide();
     }, err => {
+      this.loading.hide();
       console.log(err);
     });
     
@@ -63,16 +68,18 @@ export class AnswersListComponent implements OnInit {
     this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
-      this.isLoading = false;
+      this.loading.hide();
     }, err => {
+      this.loading.hide();
       console.log(err);
     });
     */
     this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
-      this.isLoading = false;
+      this.loading.hide();
     }, err => {
+      this.loading.hide();
       console.log(err);
     });
   }

@@ -1,15 +1,3 @@
-<mat-grid-list cols="3" rowHeight="2:1" *ngIf="isLoading">
-  <mat-grid-tile>
-  
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-spinner></mat-spinner>
-  </mat-grid-tile>
-  <mat-grid-tile>
-
-  </mat-grid-tile>
-</mat-grid-list>
-
 <ng-container *ngFor="let searchedItem of searchedItems | paginate: { id: 'index-page', itemsPerPage: 7, currentPage: page }">
     <mat-list-item>
         <mat-card>
