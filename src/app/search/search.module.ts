@@ -5,11 +5,12 @@ import { SearchRoutingModule } from './search-routing.module';
 import { HomeComponent } from './home/home.component';
 import { AnswersListComponent } from './answers-list/answers-list.component';
 import { AnswerComponent } from './answer/answer.component';
+import { HeaderComponent } from './header/header.component';
 
 
 
 @NgModule({
-  declarations: [HomeComponent, AnswersListComponent, AnswerComponent],
+  declarations: [HomeComponent, AnswersListComponent, AnswerComponent, HeaderComponent],
   imports: [
     CommonModule,
     CoreModule,
