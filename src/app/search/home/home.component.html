@@ -10,7 +10,8 @@
                 <mat-hint align="start"><strong>Try to use key words</strong> </mat-hint>
                 <mat-error *ngIf="searchWords.hasError('required')">Required field</mat-error>
             </mat-form-field>
-
+            
+            <!--
             <mat-grid-list cols="3" rowHeight="70px" *ngIf="areAdvancedOptionsDisplayed">
                 <ng-container *ngFor="let rowForm of advancedOptions.controls; let indexForm = index; last as isLast" [formGroup]="rowForm">
                     <mat-grid-tile colspan="1">
@@ -37,8 +38,9 @@
                         </button>
                     </mat-grid-tile>
                 </ng-container>
-                
             </mat-grid-list>
+            -->
+
             <button mat-raised-button type="submit">Search</button>
         </form>
         <!--

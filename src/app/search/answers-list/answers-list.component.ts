@@ -73,7 +73,7 @@ export class AnswersListComponent implements OnInit {
       this.loading.hide();
       console.log(err);
     });
-    */
+    
     this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
@@ -82,6 +82,7 @@ export class AnswersListComponent implements OnInit {
       this.loading.hide();
       console.log(err);
     });
+    */
   }
 
   public redirectToAnswer(originReference: number, questionId){

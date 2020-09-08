@@ -8,3 +8,15 @@ mat-toolbar {
 .toolbar-spacer{
     flex: 1 1 auto;
 }
+
+.main-input{
+    font-size: 14px;
+}
+
+mat-form-field{
+    width: 80%;
+}
+
+form{
+    width: 40%;
+}
