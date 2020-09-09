@@ -10,13 +10,17 @@ mat-toolbar {
 }
 
 .main-input{
-    font-size: 14px;
+    font-size: 13.2px;
 }
 
 mat-form-field{
-    width: 80%;
+    width: 82%;
 }
 
 form{
-    width: 40%;
+    width: 44%;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+    height: 2px;
 }

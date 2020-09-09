@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   public TAG_CATEGORY = this.categories[1];
 
   
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect:RedirectService ) { }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService ) { }
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({
@@ -38,10 +38,6 @@ export class HomeComponent implements OnInit {
   get advancedOptions() { return this.controls.advancedOptions as FormArray; }
   get searchWords() { return this.searchForm.get('searchWords'); }
 
-  ngOnDestroy() {
-    //this.sub.unsubscribe();
-  }
-
   public addSearchInput(){
     this.advancedOptions.push(this.getNewAdvancedOption());
   }
@@ -58,7 +54,8 @@ export class HomeComponent implements OnInit {
     if(!this.isFormValid()) return ;
 
     if (!this.areAdvancedOptionsDisplayed){
-      this.redirect.redirectToSearch(this.searchWords.value);
+      let searchString: string = encodeURIComponent(this.searchWords.value);
+      this.redirect.redirectToSearch(searchString);
     }
     else{
       let tags = [];

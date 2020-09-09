@@ -15,8 +15,9 @@ export class HeaderComponent implements OnInit {
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService) { }
 
   ngOnInit(): void {
+    let lastSearchWords = this.route.snapshot.paramMap.get("searchWords");
     this.searchForm = this.fb.group({
-      searchWords: ['', null],
+      searchWords: [lastSearchWords, null],
     });
   }
 

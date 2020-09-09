@@ -23,9 +23,13 @@ export class AnswersListComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService) { }
 
+  public redirectToAnswer(originReference: number, questionId) {
+    this.redirect.redirectToAnswer(originReference, questionId, this.searchWords);
+  }
+
   ngOnInit(): void {
     this.loading.show();
-    this.searchWords = this.route.snapshot.paramMap.get("searchWords");
+    this.searchWords = encodeURIComponent(this.route.snapshot.paramMap.get("searchWords"));
     console.log(this.searchWords);
     this.myHttp.googleSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
@@ -84,10 +88,5 @@ export class AnswersListComponent implements OnInit {
     });
     */
   }
-
-  public redirectToAnswer(originReference: number, questionId){
-    this.redirect.redirectToAnswer(originReference, questionId);
-  }
-
 
 }
