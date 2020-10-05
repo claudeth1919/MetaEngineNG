@@ -6,5 +6,5 @@ export class SearchedItem {
     public url: string;
     public link: string;
     public displayLink: string;
-    public originReference: Number;
+    public OriginId: Number;
 }

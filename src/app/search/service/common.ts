@@ -1,5 +1,5 @@
 export enum OriginEnum {
-    STACK_OVERFLOW = 0,
-    NET = 1,
-    GITHUB = 2
+    STACK_OVERFLOW = 1,
+    GITHUB = 2,
+    NET = 3,
 }

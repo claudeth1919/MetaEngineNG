@@ -16,13 +16,6 @@ export class RedirectService {
     this.document.location.href = `${this.URL_BASE}/answers/${searchWords}`;
   }
 
-  redirectToAnswer(originReference: OriginEnum, questionId: string, searchWords: string): any {
-    let url = `${this.URL_BASE}/answer/${originReference}/${questionId}#${searchWords}`;
-    var win = window.open(url, '_blank');
-    win.focus();
-    //this.document.location.href = ;
-  }
-
   redirectToadvanceSearch(textErrors: any, tags: any): any {
     let params = new HttpParams();
     textErrors.forEach(element => {

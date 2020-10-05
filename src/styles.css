@@ -16,18 +16,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   text-align: center;
 }
 
-.origin-0-image{
-  background-image: url('/../../../assets/img/so.png');
-  background-size: cover;
-}
-
 .origin-1-image{
-  background-image: url('/../../../assets/img/windows.png');
+  background-image: url('/../../../assets/img/so.png');
   background-size: cover;
 }
 
 .origin-2-image{
   background-image: url('/../../../assets/img/github.png');
+  background-size: cover;
+}
+
+.origin-3-image{
+  background-image: url('/../../../assets/img/windows.png');
   background-size: cover;
 }
 

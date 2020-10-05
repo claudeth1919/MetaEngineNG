@@ -5,6 +5,9 @@ import { MyHttpRequestService } from '../service/my-http-request.service';
 import { RedirectService } from '../service/redirect.service';
 import { OriginEnum } from '../service/common';
 import { LoadingService } from '../../core/services/loading.service';
+import { ModalService } from '../../search/service/modal.service';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { AnswerComponent } from './../answer/answer.component';
 
 @Component({
   selector: 'app-answers-list',
@@ -20,11 +23,17 @@ export class AnswersListComponent implements OnInit {
   public GITHUB = OriginEnum.GITHUB;
 
   public page: number = 1;
+  private modal: MatDialogRef<AnswerComponent>;
 
-  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService) { }
+  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public modalService: ModalService, public matDialog: MatDialog) { }
 
-  public redirectToAnswer(originReference: number, questionId) {
-    this.redirect.redirectToAnswer(originReference, questionId, this.searchWords);
+  public openModal(originId: number, questionId: string) {
+    let config: MatDialogConfig = this.modalService.getConfigModal();
+    config.data ={
+      originId: originId,
+      questionId: questionId
+    };
+    this.modal = this.matDialog.open(AnswerComponent, config);
   }
 
   ngOnInit(): void {

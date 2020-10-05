@@ -4,8 +4,8 @@
     <mat-list-item>
         <mat-card>
             <mat-card-header>
-                <div mat-card-avatar (click)="redirectToAnswer(searchedItem.originReference, searchedItem.questionId)" class="origin-{{searchedItem.originReference}}-image select-pointer"></div>
-                <mat-card-title (click)="redirectToAnswer(searchedItem.originReference, searchedItem.questionId)" class="select-pointer">{{searchedItem.title}}</mat-card-title>
+                <div mat-card-avatar (click)="openModal(searchedItem.originId, searchedItem.questionId)" class="origin-{{searchedItem.originId}}-image select-pointer"></div>
+                <mat-card-title (click)="openModal(searchedItem.originId, searchedItem.questionId)" class="select-pointer">{{searchedItem.title}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <div mat-line>{{searchedItem.content}}</div> 

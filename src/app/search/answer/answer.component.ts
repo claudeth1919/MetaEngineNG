@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional, Inject } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { MyHttpRequestService } from '../service/my-http-request.service';
 import { RedirectService } from '../service/redirect.service';
 import { OriginEnum } from '../service/common';
 import { Question } from '../entities/question.entity';
 import { LoadingService } from '../../core/services/loading.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-answer',
@@ -12,18 +13,17 @@ import { LoadingService } from '../../core/services/loading.service';
   styleUrls: ['./answer.component.css']
 })
 export class AnswerComponent implements OnInit {
-  public originReference: OriginEnum;
+  public originId: OriginEnum;
   public questionId: string;
   public question: Question = new Question();
-  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService) { }
+  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public dialogRef: MatDialogRef<AnswerComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
     this.loading.show();
-    let originStr: string = this.route.snapshot.paramMap.get("originReference");
-    this.originReference = Number(originStr);
-    this.questionId = this.route.snapshot.paramMap.get("questionId");
-
-    this.myHttp.getQuestion(this.originReference, this.questionId).subscribe((res: Question) => {
+    this.originId = this.data.originId;// this.route.snapshot.paramMap.get("originId");
+    this.questionId = this.data.questionId;//this.route.snapshot.paramMap.get("questionId");
+    console.log(this.originId + " - " + this.questionId);
+    this.myHttp.getQuestion(this.originId, this.questionId).subscribe((res: Question) => {
       console.log(res);
       this.loading.hide();
       this.question = res;
@@ -39,7 +39,7 @@ export class AnswerComponent implements OnInit {
   }
 
   public getSourceTitle() : string{
-    switch (this.originReference){
+    switch (this.originId){
       case OriginEnum.GITHUB:
         return "GitHub";
         break;
