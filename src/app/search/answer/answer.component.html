@@ -1,40 +1,46 @@
-<div class ="main-container">
-    <mat-card id="question-container">
-        <mat-card-header>
-            <div mat-card-avatar class="origin-{{originReference}}-image"></div>
-            <mat-card-title [innerHTML]="question.title"></mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <br />
-            <div mat-line class="question-body-container">
-                <div [innerHTML]="question.body" class="question-body"></div>
-            </div>
-            <div class="question-bottom">
-                <p> 
-                    <b>Source: </b> <a href="{{question.url}}" target="_blank">{{getSourceTitle()}}</a>
-                </p>
-            </div>
-        </mat-card-content>
-    </mat-card>
-    <br />
-    <mat-card>
-        <mat-card-header>
-            <div mat-card-avatar class="answers-mark"></div>
-            <mat-card-title>Answers ({{getAnswersAmount()}})</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <br />
-            <div *ngFor="let answer of question.answers">
-                <div class="answer-container">
-                    <div *ngIf="answer.isTheBest" class="is-best-mark">
-                        <img src="/assets/img/best-answer-mark.png" alt="Best Answer" width="40px">
-                    </div>
-                    <div mat-line [innerHTML]="answer.body" class="answer-item"></div>
+<h3 mat-dialog-title align="end">
+    <button mat-button mat-dialog-close>Cerrar [X]</button>
+</h3>
+<mat-dialog-content class="mat-typography">
+    <div class ="main-container">
+        <mat-card id="question-container">
+            <mat-card-header>
+                <div mat-card-avatar class="origin-{{originId}}-image"></div>
+                <mat-card-title [innerHTML]="question.title"></mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <br />
+                <div mat-line class="question-body-container">
+                    <div [innerHTML]="question.body" class="question-body"></div>
                 </div>
+                <div class="question-bottom">
+                    <p> 
+                        <b>Source: </b> <a href="{{question.url}}" target="_blank">{{getSourceTitle()}}</a>
+                    </p>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <br />
+        <mat-card>
+            <mat-card-header>
+                <div mat-card-avatar class="answers-mark"></div>
+                <mat-card-title>Answers ({{getAnswersAmount()}})</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
                 <br />
-                <br />
-            </div>
+                <div *ngFor="let answer of question.answers">
+                    <div class="answer-container">
+                        <div *ngIf="answer.isBest" class="is-best-mark">
+                            <img src="/assets/img/best-answer-mark.png" alt="Best Answer" width="40px">
+                        </div>
+                        <div mat-line [innerHTML]="answer.body" class="answer-item"></div>
+                    </div>
+                    <br />
+                    <br />
+                </div>
 
-        </mat-card-content>
-    </mat-card>
-</div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+</mat-dialog-content>

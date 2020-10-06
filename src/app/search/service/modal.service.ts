@@ -12,8 +12,9 @@ export class ModalService {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.id = "answer-modal";
-    dialogConfig.height = "100%";
-    dialogConfig.width = "100%";
+    //dialogConfig.height = "94%";
+    //dialogConfig.width = "99%";
+    dialogConfig.maxWidth = "90vw";
     return dialogConfig;
   }
 

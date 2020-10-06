@@ -40,6 +40,7 @@ export class AnswersListComponent implements OnInit {
     this.loading.show();
     this.searchWords = encodeURIComponent(this.route.snapshot.paramMap.get("searchWords"));
     console.log(this.searchWords);
+    /*
     this.myHttp.googleSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
@@ -48,6 +49,7 @@ export class AnswersListComponent implements OnInit {
       this.loading.hide();
       console.log(err);
     });
+    */
 /*
     this.myHttp.bingSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
@@ -77,7 +79,7 @@ export class AnswersListComponent implements OnInit {
       console.log(err);
     });
     
-
+*/
     this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
@@ -87,15 +89,7 @@ export class AnswersListComponent implements OnInit {
       console.log(err);
     });
     
-    this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
-      console.log(res);
-      this.searchedItems = this.searchedItems.concat(res);
-      this.loading.hide();
-    }, err => {
-      this.loading.hide();
-      console.log(err);
-    });
-    */
+    
   }
 
 }

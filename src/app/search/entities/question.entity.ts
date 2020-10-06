@@ -13,11 +13,8 @@ export class Question {
   public body: string;
   public points: number;
   public bodyLength: number;
-  public isQuestionAnswered: number;
+  public isAnswered: boolean;
   public publicationDate: number;
   public answers: Array<Answer>;
   public tags: Array<Tag>;
-
-  get isAnswered() { return this.isQuestionAnswered != 0; }
-
 }

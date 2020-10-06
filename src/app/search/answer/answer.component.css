@@ -1,20 +1,26 @@
 ::ng-deep blockquote{
-    background-color: #f9f9f9;
+    background-color: #ececec;
     border-left: 2px solid #909090;
     padding: 0.02em 16px;
     overflow-x: auto;
 }
 
 ::ng-deep pre{
-    background-color: #f9f9f9;
+    background-color: #ececec;
     padding: 0.02em 16px;
     overflow-x: auto;
+    padding-top: 6px;
+    border-radius: 16px;
+    padding-bottom: 5px;
 }
 
 ::ng-deep code{
-    background-color: #f9f9f9;
+    background-color: #ececec;
     padding: 0.01em 5px;
     overflow-x: auto;
+    padding-top: 6px;
+    border-radius: 16px;
+    padding-bottom: 5px;
 }
 
 mat-card{
@@ -22,9 +28,7 @@ mat-card{
 }
 
 .main-container{
-    padding: 0.01em 30px;
-    margin-top: 1.8em;
-    margin-bottom: 1.5em;
+    padding: 0.01em 25px;
 }
 
 .answer-container{
@@ -59,3 +63,6 @@ mat-card{
     margin-top: 1em;
 }
 
+.mat-dialog-content{
+    padding: 0px;
+}
