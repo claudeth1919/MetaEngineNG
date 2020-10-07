@@ -7,7 +7,6 @@ import { AnswerComponent } from './answer/answer.component';
 const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'answers/:searchWords', component: AnswersListComponent },
-    { path: 'answer/:originReference/:questionId', component: AnswerComponent },
     { path: '', component: HomeComponent },
 ];
 

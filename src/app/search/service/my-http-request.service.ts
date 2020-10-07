@@ -2,17 +2,28 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { environment } from 'src/environments/environment';
 import { OriginEnum } from '../service/common';
+import { SearchInterfaceEnum } from '../service/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyHttpRequestService {
   private searchApi = environment.api.search;
+  private userInteractionApi = environment.api.userInteraction;
   private answerApi = environment.api.answer;
   
   constructor(private httpClient: HttpClient) { }
-  getQuestion(originReference: OriginEnum, questionId: string): any {
-    return this.httpClient.get<any>(`${this.answerApi}/${originReference}/${questionId}`);
+
+  getQuestion(originId: OriginEnum, questionId: string, searchInterfaceId: SearchInterfaceEnum, keyWords : Array<string>): any {
+    return this.httpClient.post<any>(`${this.answerApi}/${originId}/${questionId}/${searchInterfaceId}`, { 'keyWords' : keyWords});
+  }
+
+  getKeyWords(searchWords : string) : Array<string>{
+    return this.httpClient.get<any>(`${this.userInteractionApi}/keyWords/${searchWords}`);
+  }
+
+  updateQuestionAsSeen(questionId: string): Array<string> {
+    return this.httpClient.put<any>(`${this.userInteractionApi}/question/${questionId}`);
   }
 
   googleSearch(searchWords: string): any {

@@ -2,6 +2,7 @@ export const environment = {
   production: true,
   api: {
     search: "",
-    respuesta: ""
+    respuesta: "",
+    userInteraction: "/api/v1/userInteraction"
   }
 };
