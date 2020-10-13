@@ -3,7 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { SearchedItem } from '../entities/searchedItem.entity';
 import { MyHttpRequestService } from '../service/my-http-request.service';
 import { RedirectService } from '../service/redirect.service';
-import { OriginEnum } from '../service/common';
+import { OriginEnum, SearchInterfaceEnum } from '../service/common';
 import { LoadingService } from '../../core/services/loading.service';
 import { ModalService } from '../../search/service/modal.service';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
@@ -16,6 +16,7 @@ import { AnswerComponent } from './../answer/answer.component';
 })
 export class AnswersListComponent implements OnInit {
   private searchWords:string;
+  private arrayKeyWords: Array<string>;
   public searchedItems: Array<SearchedItem> = new Array<SearchedItem>();
 
   public STACK_OVERFLOW = OriginEnum.STACK_OVERFLOW;
@@ -27,12 +28,15 @@ export class AnswersListComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public modalService: ModalService, public matDialog: MatDialog) { }
 
-  public openModal(originId: number, questionId: string) {
+  public openModal(originId: OriginEnum, questionId: string, searchInterfaceId: SearchInterfaceEnum) {
     let config: MatDialogConfig = this.modalService.getConfigModal();
     config.data ={
       originId: originId,
-      questionId: questionId
+      questionId: questionId,
+      searchInterfaceId: searchInterfaceId,
+      arrayKeyWords: this.arrayKeyWords,
     };
+    console.log(config.data);
     this.modal = this.matDialog.open(AnswerComponent, config);
   }
 
@@ -40,7 +44,16 @@ export class AnswersListComponent implements OnInit {
     this.loading.show();
     this.searchWords = encodeURIComponent(this.route.snapshot.paramMap.get("searchWords"));
     console.log(this.searchWords);
-    /*
+    
+    this.myHttp.getKeyWords(this.searchWords).subscribe((res: Array<string>) => {
+      console.log(res);
+      this.arrayKeyWords = res;
+    }, err => {
+      console.log(err);
+    });
+
+    
+    
     this.myHttp.googleSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
@@ -48,8 +61,8 @@ export class AnswersListComponent implements OnInit {
     }, err => {
       this.loading.hide();
       console.log(err);
-    });
-    */
+    }); 
+    
 /*
     this.myHttp.bingSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
@@ -79,7 +92,7 @@ export class AnswersListComponent implements OnInit {
       console.log(err);
     });
     
-*/
+
     this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
@@ -89,7 +102,7 @@ export class AnswersListComponent implements OnInit {
       console.log(err);
     });
     
-    
+    */
   }
 
 }

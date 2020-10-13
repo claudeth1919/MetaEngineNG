@@ -3,7 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { MyHttpRequestService } from '../service/my-http-request.service';
 import { RedirectService } from '../service/redirect.service';
 import { MetaEngineUtilService } from '../service/meta-engine-util.service';
-import { OriginEnum } from '../service/common';
+import { OriginEnum, SearchInterfaceEnum } from '../service/common';
 import { Question } from '../entities/question.entity';
 import { LoadingService } from '../../core/services/loading.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -15,7 +15,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class AnswerComponent implements OnInit {
   public originId: OriginEnum;
+  public searchInterfaceId: SearchInterfaceEnum;
   public questionId: string;
+  public arrayKeyWords: Array<string>;
   public question: Question = new Question();
   constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public dialogRef: MatDialogRef<AnswerComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private metaUtilService: MetaEngineUtilService) { }
 
@@ -23,8 +25,10 @@ export class AnswerComponent implements OnInit {
     this.loading.show();
     this.originId = this.data.originId;
     this.questionId = this.data.questionId;
+    this.searchInterfaceId = this.data.searchInterfaceId;
+    this.arrayKeyWords = this.data.arrayKeyWords;
     console.log(this.originId + " - " + this.questionId);
-    this.myHttp.getQuestion(this.originId, this.questionId).subscribe((res: Question) => {
+    this.myHttp.getQuestion(this.originId, this.questionId, this.searchInterfaceId, this.arrayKeyWords).subscribe((res: Question) => {
       console.log(res);
       this.loading.hide();
       this.question = res;

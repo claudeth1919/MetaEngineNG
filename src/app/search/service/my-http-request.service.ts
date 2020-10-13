@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http'
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
 import { environment } from 'src/environments/environment';
 import { OriginEnum } from '../service/common';
 import { SearchInterfaceEnum } from '../service/common';
@@ -14,16 +14,25 @@ export class MyHttpRequestService {
   
   constructor(private httpClient: HttpClient) { }
 
-  getQuestion(originId: OriginEnum, questionId: string, searchInterfaceId: SearchInterfaceEnum, keyWords : Array<string>): any {
-    return this.httpClient.post<any>(`${this.answerApi}/${originId}/${questionId}/${searchInterfaceId}`, { 'keyWords' : keyWords});
+  getQuestion(originId: OriginEnum, questionId: string, searchInterfaceId: SearchInterfaceEnum, arrayKeyWords : Array<string>): any {
+    const headers = new HttpHeaders();
+    headers.append('Accept', 'application/json');
+    let formData: FormData = new FormData();
+    if (arrayKeyWords != undefined){
+      arrayKeyWords.forEach(item => {
+        formData.append("arrayKeyWords", item);
+      });
+    }
+    console.log(formData);
+    return this.httpClient.post<any>(`${this.answerApi}/${originId}/${questionId}/${searchInterfaceId}`, formData, { headers: headers});
   }
 
-  getKeyWords(searchWords : string) : Array<string>{
+  getKeyWords(searchWords: string): any{
     return this.httpClient.get<any>(`${this.userInteractionApi}/keyWords/${searchWords}`);
   }
 
-  updateQuestionAsSeen(questionId: string): Array<string> {
-    return this.httpClient.put<any>(`${this.userInteractionApi}/question/${questionId}`);
+  updateQuestionAsSeen(questionId: string): any {
+    return this.httpClient.put<any>(`${this.userInteractionApi}/question/${questionId}`, null);
   }
 
   googleSearch(searchWords: string): any {
