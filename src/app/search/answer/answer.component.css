@@ -23,6 +23,10 @@
     padding-bottom: 5px;
 }
 
+::ng-deep img{
+    max-width: 99%;
+}
+
 mat-card{
     border: 1px solid #ccc!important;
 }

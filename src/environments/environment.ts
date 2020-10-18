@@ -5,9 +5,9 @@
 export const environment = {
   production: false,
   api: {
-    search: "https://192.168.1.129:45455/api/v1/search",
-    answer: "https://192.168.1.129:45455/api/v1/answer",
-    userInteraction: "https://192.168.1.129:45455/api/v1/userInteraction"
+    search: "https://192.168.1.135:45455/api/v1/search",
+    answer: "https://192.168.1.135:45455/api/v1/answer",
+    userInteraction: "https://192.168.1.135:45455/api/v1/userInteraction"
   }
 };
 

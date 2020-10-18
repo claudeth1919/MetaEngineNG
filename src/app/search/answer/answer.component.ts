@@ -27,16 +27,30 @@ export class AnswerComponent implements OnInit {
     this.questionId = this.data.questionId;
     this.searchInterfaceId = this.data.searchInterfaceId;
     this.arrayKeyWords = this.data.arrayKeyWords;
+
     console.log(this.originId + " - " + this.questionId);
-    this.myHttp.getQuestion(this.originId, this.questionId, this.searchInterfaceId, this.arrayKeyWords).subscribe((res: Question) => {
-      console.log(res);
-      this.loading.hide();
-      this.question = res;
-      this.metaUtilService.editQuestionHTML(this.question);
-    }, err => {
-      console.log(err);
+    if (this.data.question == undefined){
+      console.log("Entrada 1");
+      this.myHttp.getQuestion(this.originId, this.questionId, this.searchInterfaceId, this.arrayKeyWords, true).subscribe((res: Question) => {
+        console.log(res);
         this.loading.hide();
-    });
+        this.question = res;
+        this.metaUtilService.editQuestionHTML(this.question);
+      }, err => {
+        console.log(err);
+        this.loading.hide();
+      });
+    }else{
+      console.log("Entrada 2");
+      this.question = this.data.question;
+      this.loading.hide();
+      this.myHttp.updateQuestionAsSeen(this.question.id).subscribe((res: boolean) => {
+        console.log("RE: " + res);
+      }, err => {
+        console.log(err);
+      });
+    }
+    
   }
 
   public getAnswersAmount() : number{

@@ -1,7 +1,9 @@
 import { SearchInterfaceEnum, OriginEnum } from './../service/common';
+import { Question } from './question.entity';
 
 export class SearchedItem {
     public questionId: string;
+    public question: Question;
     public title: string;
     public url: string;
     public link: string;
