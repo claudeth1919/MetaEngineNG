@@ -14,7 +14,7 @@ export class MyHttpRequestService {
   
   constructor(private httpClient: HttpClient) { }
 
-  getQuestion(originId: OriginEnum, questionId: string, searchInterfaceId: SearchInterfaceEnum, arrayKeyWords: Array<string>, isSeenByUser: boolean): any {
+  getQuestion(originId: OriginEnum, questionId: string, searchInterfaceId: SearchInterfaceEnum, arrayKeyWords: Array<string>, isSeenByUser: boolean, completeSentence): any {
     const headers = new HttpHeaders();
     headers.append('Accept', 'application/json');
     let formData: FormData = new FormData();
@@ -24,6 +24,7 @@ export class MyHttpRequestService {
       });
     }
     formData.append("isSeenByUser", (isSeenByUser ? "true" : "false"));
+    formData.append("completeSentence", completeSentence);
     return this.httpClient.post<any>(`${this.answerApi}/${originId}/${questionId}/${searchInterfaceId}`, formData, { headers: headers});
   }
 

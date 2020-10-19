@@ -19,6 +19,7 @@ export class AnswersListComponent implements OnInit {
   private searchWords:string;
   private arrayKeyWords: Array<string>;
   public searchedItems: Array<SearchedItem> = new Array<SearchedItem>();
+  private completeSentence : string;
 
   public STACK_OVERFLOW = OriginEnum.STACK_OVERFLOW;
   public NET = OriginEnum.NET;
@@ -37,6 +38,7 @@ export class AnswersListComponent implements OnInit {
       searchInterfaceId: searchInterfaceId,
       arrayKeyWords: this.arrayKeyWords,
       question: question,
+      completeSentence: this.completeSentence
     };
     console.log(config.data);
     this.modal = this.matDialog.open(AnswerComponent, config);
@@ -44,7 +46,8 @@ export class AnswersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading.show();
-    this.searchWords = encodeURIComponent(this.route.snapshot.paramMap.get("searchWords"));
+    this.completeSentence = this.route.snapshot.paramMap.get("searchWords");
+    this.searchWords = encodeURIComponent(this.completeSentence);
     console.log(this.searchWords);
     
     this.myHttp.getKeyWords(this.searchWords).subscribe((res: Array<string>) => {
@@ -54,8 +57,6 @@ export class AnswersListComponent implements OnInit {
       console.log(err);
     });
 
-    
-    
     this.myHttp.googleSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
@@ -122,7 +123,7 @@ export class AnswersListComponent implements OnInit {
   private getQuestions(){
     this.searchedItems.forEach(item => {
       if (item.question == undefined){
-        this.myHttp.getQuestion(item.originId, item.questionId, item.searchInterfaceId, this.arrayKeyWords, false).subscribe((res: Question) => {
+        this.myHttp.getQuestion(item.originId, item.questionId, item.searchInterfaceId, this.arrayKeyWords, false, this.completeSentence).subscribe((res: Question) => {
           console.log(res);
           item.question = res;
           if(res.answers == undefined){

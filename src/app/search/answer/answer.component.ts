@@ -17,6 +17,7 @@ export class AnswerComponent implements OnInit {
   public originId: OriginEnum;
   public searchInterfaceId: SearchInterfaceEnum;
   public questionId: string;
+  public completeSentence: string;
   public arrayKeyWords: Array<string>;
   public question: Question = new Question();
   constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public dialogRef: MatDialogRef<AnswerComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private metaUtilService: MetaEngineUtilService) { }
@@ -27,11 +28,12 @@ export class AnswerComponent implements OnInit {
     this.questionId = this.data.questionId;
     this.searchInterfaceId = this.data.searchInterfaceId;
     this.arrayKeyWords = this.data.arrayKeyWords;
-
+    this.completeSentence = this.data.completeSentence;
+    
     console.log(this.originId + " - " + this.questionId);
     if (this.data.question == undefined){
       console.log("Entrada 1");
-      this.myHttp.getQuestion(this.originId, this.questionId, this.searchInterfaceId, this.arrayKeyWords, true).subscribe((res: Question) => {
+      this.myHttp.getQuestion(this.originId, this.questionId, this.searchInterfaceId, this.arrayKeyWords, true, this.completeSentence).subscribe((res: Question) => {
         console.log(res);
         this.loading.hide();
         this.question = res;
