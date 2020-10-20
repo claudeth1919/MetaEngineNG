@@ -3,10 +3,11 @@ import { ActivatedRoute } from "@angular/router";
 import { MyHttpRequestService } from '../service/my-http-request.service';
 import { RedirectService } from '../service/redirect.service';
 import { MetaEngineUtilService } from '../service/meta-engine-util.service';
-import { OriginEnum, SearchInterfaceEnum } from '../service/common';
+import { OriginEnum, SearchInterfaceEnum, InteractionTypeEnum } from '../service/common';
 import { Question } from '../entities/question.entity';
 import { LoadingService } from '../../core/services/loading.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Guid } from "guid-typescript";
 
 @Component({
   selector: 'app-answer',
@@ -20,6 +21,9 @@ export class AnswerComponent implements OnInit {
   public completeSentence: string;
   public arrayKeyWords: Array<string>;
   public question: Question = new Question();
+  private userSearchId: Guid;
+  private userSesionId: Guid;
+
   constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public dialogRef: MatDialogRef<AnswerComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private metaUtilService: MetaEngineUtilService) { }
 
   ngOnInit(): void {
@@ -29,11 +33,12 @@ export class AnswerComponent implements OnInit {
     this.searchInterfaceId = this.data.searchInterfaceId;
     this.arrayKeyWords = this.data.arrayKeyWords;
     this.completeSentence = this.data.completeSentence;
-    
+    this.userSearchId = this.data.userSearchId;
+    this.userSesionId = this.data.userSesionId;
     console.log(this.originId + " - " + this.questionId);
     if (this.data.question == undefined){
       console.log("Entrada 1");
-      this.myHttp.getQuestion(this.originId, this.questionId, this.searchInterfaceId, this.arrayKeyWords, true, this.completeSentence).subscribe((res: Question) => {
+      this.myHttp.getQuestion(this.originId, this.questionId, this.searchInterfaceId, this.arrayKeyWords, true, this.completeSentence, this.userSearchId, this.userSesionId).subscribe((res: Question) => {
         console.log(res);
         this.loading.hide();
         this.question = res;
@@ -46,7 +51,7 @@ export class AnswerComponent implements OnInit {
       console.log("Entrada 2");
       this.question = this.data.question;
       this.loading.hide();
-      this.myHttp.updateQuestionAsSeen(this.question.id).subscribe((res: boolean) => {
+      this.myHttp.updateQuestionInteraction(this.question.id, InteractionTypeEnum.PUBLICATION_IS_SEEN, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
         console.log("RE: " + res);
       }, err => {
         console.log(err);

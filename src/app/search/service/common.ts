@@ -11,3 +11,10 @@ export enum SearchInterfaceEnum {
     HTML_GITHUB_SEARCH = 4,
     HTML_MICROSOFT_SEARCH = 5
 }
+
+export enum InteractionTypeEnum {
+    QUESTION_FOUNDED = 1,
+    QUESTION_VOTED = 2,
+    ANSWER_VOTED = 3,
+    PUBLICATION_IS_SEEN = 4,
+}
