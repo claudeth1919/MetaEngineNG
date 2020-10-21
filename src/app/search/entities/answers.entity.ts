@@ -9,4 +9,5 @@ export class Answer {
     public publicationDate: number;
     public userScore: number;
     public questionId: string;
+    public isVoted:boolean = false;
 }

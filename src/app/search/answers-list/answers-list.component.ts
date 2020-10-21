@@ -47,6 +47,24 @@ export class AnswersListComponent implements OnInit {
     };
     console.log(config.data);
     this.modal = this.matDialog.open(AnswerComponent, config);
+    this.afterCloseModal();
+  }
+
+  private afterCloseModal(){
+    this.modal.afterClosed()
+      .subscribe(response => {
+        console.log(response);
+        this.searchedItems.forEach(element => {
+          if(element.questionId == response.question.id ){
+            element.question.isSeen = response.question.isSeen;
+            if (element.question.answers!=undefined){
+              element.question.answers.forEach(ans => {
+                ans.isVoted = (response.question.answers.filter(x => x.id == ans.id))[0].isVoted;
+              });
+            }
+          }
+        });
+      });
   }
 
   ngOnInit(): void {
@@ -62,6 +80,17 @@ export class AnswersListComponent implements OnInit {
     }, err => {
       console.log(err);
     });
+
+    this.myHttp.soSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
+      console.log(res);
+      this.searchedItems = this.searchedItems.concat(res);
+      this.loading.hide();
+    }, err => {
+      this.loading.hide();
+      console.log(err);
+    });
+
+
 /*
     this.myHttp.googleSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
@@ -83,15 +112,7 @@ export class AnswersListComponent implements OnInit {
       console.log(err);
     });
     
-    this.myHttp.soSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
-      console.log(res);
-      this.searchedItems = this.searchedItems.concat(res);
-      this.loading.hide();
-    }, err => {
-      this.loading.hide();
-      console.log(err);
-    });
-
+    
     
     this.myHttp.githubSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
@@ -102,11 +123,6 @@ export class AnswersListComponent implements OnInit {
       console.log(err);
     });
     
-
-    
-    */
-
-
     this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
@@ -116,6 +132,8 @@ export class AnswersListComponent implements OnInit {
       this.loading.hide();
       console.log(err);
     });
+
+    */
   }
 
   private setSearchedItemOrder(){

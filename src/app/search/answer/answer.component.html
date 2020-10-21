@@ -1,5 +1,5 @@
 <h3 mat-dialog-title align="end">
-    <button mat-button mat-dialog-close>Cerrar [X]</button>
+    <button mat-button (click)="closeModal()">Cerrar [X]</button>
 </h3>
 <mat-dialog-content class="mat-typography">
     <div class ="main-container">
@@ -30,13 +30,21 @@
                 <br />
                 <div *ngFor="let answer of question.answers">
                     <div class="answer-container">
-                        <div *ngIf="answer.isBest" class="is-best-mark">
-                            <img src="/assets/img/best-answer-mark.png" alt="Best Answer" width="40px">
+                        <div class="is-best-mark" *ngIf="answer.isBest" >
+                            <img src="/assets/img/best-answer-mark.png" alt="Best Answer" width="30px">
                         </div>
                         <div mat-line [innerHTML]="answer.body" class="answer-item"></div>
+                        <div class="footer-answer">
+                            <div *ngIf="!answer.isVoted">
+                                <span> <b>¿Te ayudó la respuestas?</b></span>
+                                <button mat-button (click)="setAnswerVote(answer.id, 1)" style="color:#009900;">Sí</button>
+                                <button mat-button (click)="setAnswerVote(answer.id, 0)" style="color:rebeccapurple;">No</button>
+                            </div>
+                            <span *ngIf="answer.isVoted"> <b>Ya ha sido votada, ¡gracias por su votación!</b></span>
+                        </div>
                     </div>
-                    <br />
-                    <br />
+                    <br/>
+                    <br/>
                 </div>
 
             </mat-card-content>

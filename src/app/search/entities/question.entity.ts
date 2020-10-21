@@ -20,4 +20,5 @@ export class Question {
   public answers: Array<Answer>;
   public tags: Array<Tag>;
   public searchInterfaceId: SearchInterfaceEnum;
+  public isSeen: boolean = false;
 }

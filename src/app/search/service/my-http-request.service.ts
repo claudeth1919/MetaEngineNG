@@ -43,7 +43,7 @@ export class MyHttpRequestService {
     formData.append("userSearchId", userSearchId.toString());
     formData.append("userSesionId", userSesionId.toString());
     formData.append("questionId", questionId);
-    return this.httpClient.put<any>(`${this.userInteractionApi}/interaction/question/${questionId}`, formData);
+    return this.httpClient.put<any>(`${this.userInteractionApi}/question/${questionId}`, formData);
   }
 
   updateQuestionInteractionWithValue(questionId: string, interactionType: InteractionTypeEnum, value: number, userSearchId: Guid, userSesionId: Guid): any {
@@ -55,7 +55,7 @@ export class MyHttpRequestService {
     formData.append("userSesionId", userSesionId.toString());
     formData.append("questionId", questionId);
     formData.append("value", value.toString());
-    return this.httpClient.post<any>(`${this.userInteractionApi}/interaction/question/${questionId}`, formData);
+    return this.httpClient.post<any>(`${this.userInteractionApi}/question/${questionId}`, formData);
   }
 
   updateAnswerInteractionWithValue(questionId: string, answerId: string, interactionType: InteractionTypeEnum, value: number, userSearchId: Guid, userSesionId: Guid): any {
@@ -65,9 +65,9 @@ export class MyHttpRequestService {
     formData.append("interactionType", interactionType.toString());
     formData.append("userSearchId", userSearchId.toString());
     formData.append("userSesionId", userSesionId.toString());
-    formData.append("questionId", questionId);
     formData.append("value", value.toString());
-    return this.httpClient.post<any>(`${this.userInteractionApi}/interaction/question/${answerId}/${questionId}`, formData);
+    console.log("VALUE: "+value.toString());
+    return this.httpClient.post<any>(`${this.userInteractionApi}/answer/${answerId}/${questionId}`, formData);
   }
 
   googleSearch(searchWords: string): any {
