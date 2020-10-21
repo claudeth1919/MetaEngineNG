@@ -2,14 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { SearchedItem } from '../entities/searchedItem.entity';
 import { Question } from '../entities/question.entity';
+import { Answer } from '../entities/answers.entity';
 import { MyHttpRequestService } from '../service/my-http-request.service';
 import { RedirectService } from '../service/redirect.service';
-import { OriginEnum, SearchInterfaceEnum } from '../service/common';
+import { OriginEnum, SearchInterfaceEnum, InteractionTypeEnum } from '../service/common';
 import { LoadingService } from '../../core/services/loading.service';
 import { ModalService } from '../../search/service/modal.service';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnswerComponent } from './../answer/answer.component';
 import { Guid } from "guid-typescript";
+import { MetaEngineUtilService } from '../service/meta-engine-util.service';
+import { UtilService } from '../service/util.service';
 
 @Component({
   selector: 'app-answers-list',
@@ -20,6 +24,7 @@ export class AnswersListComponent implements OnInit {
   private searchWords:string;
   private arrayKeyWords: Array<string>;
   public searchedItems: Array<SearchedItem> = new Array<SearchedItem>();
+  public possibleAnswers: Array<Answer> = new Array<Answer>();
   private completeSentence : string;
   private userSearchId: Guid =  Guid.create();
   private userSesionId: Guid;
@@ -31,7 +36,7 @@ export class AnswersListComponent implements OnInit {
   public page: number = 1;
   private modal: MatDialogRef<AnswerComponent>;
 
-  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public modalService: ModalService, public matDialog: MatDialog) { }
+  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public modalService: ModalService, public matDialog: MatDialog, private snackBar: MatSnackBar, public util : UtilService, private metaUtilService: MetaEngineUtilService) { }
 
   public openModal(originId: OriginEnum, questionId: string, searchInterfaceId: SearchInterfaceEnum, question : Question) {
     let config: MatDialogConfig = this.modalService.getConfigModal();
@@ -80,18 +85,14 @@ export class AnswersListComponent implements OnInit {
     }, err => {
       console.log(err);
     });
+    //this.getSearchItems();
+    this.searchedItems = this.util.testDate();
+    this.setSearchedItemOrder();
+    this.setRecomendedAnswers();
+    this.loading.hide();
+  }
 
-    this.myHttp.soSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
-      console.log(res);
-      this.searchedItems = this.searchedItems.concat(res);
-      this.loading.hide();
-    }, err => {
-      this.loading.hide();
-      console.log(err);
-    });
-
-
-/*
+  private getSearchItems(){
     this.myHttp.googleSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
@@ -101,23 +102,22 @@ export class AnswersListComponent implements OnInit {
       this.loading.hide();
       console.log(err);
     }); 
-    
 
     this.myHttp.bingSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
       this.loading.hide();
+      this.getQuestions();
     }, err => {
       this.loading.hide();
       console.log(err);
     });
     
-    
-    
     this.myHttp.githubSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
       this.loading.hide();
+      this.getQuestions();
     }, err => {
       this.loading.hide();
       console.log(err);
@@ -133,18 +133,48 @@ export class AnswersListComponent implements OnInit {
       console.log(err);
     });
 
-    */
+    this.myHttp.soSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
+      console.log(res);
+      this.searchedItems = this.searchedItems.concat(res);
+      this.loading.hide();
+    }, err => {
+      this.loading.hide();
+      console.log(err);
+    });
+
   }
 
   private setSearchedItemOrder(){
-    let searchedItemsTemp : Array<SearchedItem>;
-    //searchedItemsTemp.push();
-    //searchedItemsTemp.
-    //this.searchedItems[0];
-    this.searchedItems.find(item=> item.searchInterfaceId == SearchInterfaceEnum.GOOGLE_API);
+    let searchedItemsTemp : Array<SearchedItem> = new Array<SearchedItem>();
+    let googledFirst : SearchedItem = this.searchedItems.find(x=> x.searchInterfaceId == SearchInterfaceEnum.GOOGLE_API);
+    if(googledFirst!=undefined){
+         searchedItemsTemp.push(googledFirst);
+         this.searchedItems = this.searchedItems.filter(x=> x.questionId != googledFirst.questionId);
+    }
     this.searchedItems.forEach(item=>{
-
+        if(item!=undefined) searchedItemsTemp.push(item);
     });
+    this.searchedItems = searchedItemsTemp;
+  }
+
+  private setRecomendedAnswers(){
+    this.possibleAnswers= new Array<Answer>();
+    let filterAnswers = this.searchedItems.filter(item=> item.question != undefined && item.question.answers != undefined);
+    filterAnswers = this.searchedItems.filter(item=> item.question.answers != undefined);
+    filterAnswers = this.searchedItems.filter(item=> item.question.answers.length > 0);
+    if(filterAnswers.length > 0){
+        let first:Answer = filterAnswers[0].question.answers[0];
+        this.possibleAnswers.push(first);
+        if(filterAnswers.length >= 1){
+            let second:Answer = filterAnswers[1].question.answers[0];
+            this.possibleAnswers.push(second);
+        }
+        console.log(this.possibleAnswers);
+        this.possibleAnswers.forEach((element : Answer) => {
+            this.metaUtilService.editAnswerHTML(element);
+            this.metaUtilService.remarkTextAnswer(element, ["error c#"] /*this.arrayKeyWords*/);
+        });
+    }
   }
 
   private setSesionId(){
@@ -180,6 +210,25 @@ export class AnswersListComponent implements OnInit {
       index++
     });
 
+  }
+
+  public setAnswerVote(answerId: string, questionId:string, vote: number){
+    console.log("setAnswerVote: " + vote);
+    
+    this.myHttp.updateAnswerInteractionWithValue(questionId, answerId , InteractionTypeEnum.PUBLICATION_IS_SEEN, vote, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
+      console.log("RE: " + res);
+      this.searchedItems.filter(x=> x.question!=undefined && x.question.id == questionId).forEach(item=>{
+          (item.question.answers.filter(x=> x.id == answerId))[0].isVoted = res;
+          if(res){
+              this.snackBar.open(this.metaUtilService.messageAfterVote, undefined,{
+                    duration: 2000
+            });
+          }
+      });
+      
+    }, err => {
+      console.log(err);
+    });
   }
 
 }

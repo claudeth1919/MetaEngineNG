@@ -8,6 +8,7 @@ import { Question } from '../entities/question.entity';
 import { Answer } from '../entities/answers.entity';
 import { LoadingService } from '../../core/services/loading.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Guid } from "guid-typescript";
 
 @Component({
@@ -25,7 +26,7 @@ export class AnswerComponent implements OnInit {
   private userSearchId: Guid;
   private userSesionId: Guid;
 
-  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public dialogRef: MatDialogRef<AnswerComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private metaUtilService: MetaEngineUtilService) { }
+  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public dialogRef: MatDialogRef<AnswerComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private metaUtilService: MetaEngineUtilService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.loading.show();
@@ -52,6 +53,7 @@ export class AnswerComponent implements OnInit {
       });
     }else{
       this.question = this.data.question;
+      this.metaUtilService.editQuestionHTML(this.question);
       console.log("Entrada 2 " + this.question.id);
       this.loading.hide();
       if (!this.question.isSeen){
@@ -63,7 +65,6 @@ export class AnswerComponent implements OnInit {
         });
       }
     }
-    
   }
 
   public closeModal(){
@@ -81,6 +82,11 @@ export class AnswerComponent implements OnInit {
     this.myHttp.updateAnswerInteractionWithValue(this.question.id, answerId , InteractionTypeEnum.PUBLICATION_IS_SEEN, vote, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
       console.log("RE: " + res);
       (this.question.answers.filter(x => x.id == answerId))[0].isVoted = res;
+      if(res){
+            this.snackBar.open(this.metaUtilService.messageAfterVote, undefined,{
+                duration: 2000
+            });
+       }
     }, err => {
       console.log(err);
     });

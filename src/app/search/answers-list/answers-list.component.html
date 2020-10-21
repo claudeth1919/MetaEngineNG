@@ -1,20 +1,55 @@
 <app-header></app-header>
+<div fxLayout="row nowrap" fxFlexFill fxLayoutAlign="start stretch">
+  <!-- FLEX-CHILD - LEFT -->
+  <div id="lista-resultados" fxFlex="50%" fxFlexFill  fxFlex.xs="100%" fxFlex.sm="100%">
+    <mat-card class="header-results">
+        <p><b>Se encontraron {{searchedItems.length}} resultados</b></p>
+    </mat-card>
+    <ng-container *ngFor="let searchedItem of searchedItems | paginate: { id: 'index-page', itemsPerPage: 5, currentPage: page }">
+        <mat-list-item>
+            <mat-card>
+                <mat-card-header>
+                    <div mat-card-avatar (click)="openModal(searchedItem.originId, searchedItem.questionId, searchedItem.searchInterfaceId, searchedItem.question)" class="origin-{{searchedItem.originId}}-image select-pointer"></div>
+                    <mat-card-title (click)="openModal(searchedItem.originId, searchedItem.questionId, searchedItem.searchInterfaceId, searchedItem.question)" class="select-pointer">{{searchedItem.title}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div mat-line>{{searchedItem.content}}</div> 
+                </mat-card-content>
+            </mat-card>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+    </ng-container>
 
-<ng-container *ngFor="let searchedItem of searchedItems | paginate: { id: 'index-page', itemsPerPage: 6, currentPage: page }">
-    <mat-list-item>
-        <mat-card>
-            <mat-card-header>
-                <div mat-card-avatar (click)="openModal(searchedItem.originId, searchedItem.questionId, searchedItem.searchInterfaceId, searchedItem.question)" class="origin-{{searchedItem.originId}}-image select-pointer"></div>
-                <mat-card-title (click)="openModal(searchedItem.originId, searchedItem.questionId, searchedItem.searchInterfaceId, searchedItem.question)" class="select-pointer">{{searchedItem.title}}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <div mat-line>{{searchedItem.content}}</div> 
-            </mat-card-content>
-        </mat-card>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-</ng-container>
-
-<div class="has-text-centered">
-    <pagination-controls id="index-page" (pageChange)="page = $event" autoHide="true" responsive="true"></pagination-controls>
+    <div class="has-text-centered">
+        <pagination-controls id="index-page" (pageChange)="page = $event" autoHide="true" responsive="true"></pagination-controls>
+    </div>
+  </div>
+  <!-- FLEX-CHILD - RIGHT -->
+  <div id="preview" fxFlex="50%" fxFlexFill *ngIf="possibleAnswers.length != 0" fxHide.lt-md fxFlex.xs="100%" fxFlex.sm="100%">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Respuestas recomendadas</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div *ngFor="let answer of possibleAnswers">
+                <div class="answer-container">
+                    <div class="is-best-mark" *ngIf="answer.isBest" >
+                        <img src="/assets/img/best-answer-mark.png" alt="Best Answer" width="25px">
+                    </div>
+                    <div mat-line [innerHTML]="answer.body" class="answer-item"></div>
+                    <div class="footer-answer">
+                        <div *ngIf="!answer.isVoted">
+                            <span> <b>Is it useful?</b></span>
+                            <button mat-button (click)="setAnswerVote(answer.id, answer.questionId, 1)" style="color:#009900;">Sí</button>
+                            <button mat-button (click)="setAnswerVote(answer.id, answer.questionId, 0)" class="azul">No</button>
+                        </div>
+                        <span *ngIf="answer.isVoted"> <b>Answered</b></span>
+                    </div>
+                </div>
+                <br/>
+            </div>         
+        </mat-card-content>
+    </mat-card>
+  </div>
 </div>
+

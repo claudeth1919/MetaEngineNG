@@ -6,7 +6,7 @@
         <form class="main-form" [formGroup]="searchForm" (ngSubmit)="searchAnswers()">
             <mat-form-field class="main-input-full-width" *ngIf="!areAdvancedOptionsDisplayed">
                 <mat-icon matSuffix>search</mat-icon>
-                <input matInput #message formControlName="searchWords" maxlength="400" minlength="5" placeholder="Search" autocomplete="false" class="main-input">
+                <input matInput #message formControlName="searchWords" maxlength="199" minlength="5" placeholder="Search" autocomplete="false" class="main-input">
                 <mat-hint align="start"><strong>Try to use key words</strong> </mat-hint>
                 <mat-error *ngIf="searchWords.hasError('required')">Required field</mat-error>
             </mat-form-field>

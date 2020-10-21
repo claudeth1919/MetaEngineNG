@@ -8,7 +8,6 @@ import { AnswerComponent } from './answer/answer.component';
 import { HeaderComponent } from './header/header.component';
 
 
-
 @NgModule({
   declarations: [HomeComponent, AnswersListComponent, AnswerComponent, HeaderComponent],
   imports: [
