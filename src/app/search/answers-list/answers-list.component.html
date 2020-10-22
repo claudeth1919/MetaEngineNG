@@ -5,12 +5,12 @@
     <mat-card class="header-results">
         <p><b>Se encontraron {{searchedItems.length}} resultados</b></p>
     </mat-card>
-    <ng-container *ngFor="let searchedItem of searchedItems | paginate: { id: 'index-page', itemsPerPage: 5, currentPage: page }">
+    <ng-container *ngFor="let searchedItem of searchedItems | paginate: { id: 'index-page', itemsPerPage: 4, currentPage: page }">
         <mat-list-item>
             <mat-card>
                 <mat-card-header>
-                    <div mat-card-avatar (click)="openModal(searchedItem.originId, searchedItem.questionId, searchedItem.searchInterfaceId, searchedItem.question)" class="origin-{{searchedItem.originId}}-image select-pointer"></div>
-                    <mat-card-title (click)="openModal(searchedItem.originId, searchedItem.questionId, searchedItem.searchInterfaceId, searchedItem.question)" class="select-pointer">{{searchedItem.title}}</mat-card-title>
+                    <div mat-card-avatar (click)="openModal(searchedItem.originId, searchedItem.questionElementId, searchedItem.searchInterfaceId, searchedItem.question)" class="origin-{{searchedItem.originId}}-image select-pointer"></div>
+                    <mat-card-title (click)="openModal(searchedItem.originId, searchedItem.questionElementId, searchedItem.searchInterfaceId, searchedItem.question)" class="select-pointer">{{searchedItem.title}}</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                     <div mat-line>{{searchedItem.content}}</div> 
@@ -25,12 +25,12 @@
     </div>
   </div>
   <!-- FLEX-CHILD - RIGHT -->
-  <div id="preview" fxFlex="50%" fxFlexFill *ngIf="possibleAnswers.length != 0" fxHide.lt-md fxFlex.xs="100%" fxFlex.sm="100%">
+  <div id="preview" fxFlex="50%" fxFlexFill *ngIf="possibleAnswers.length != 0" fxHide.lt-md fxFlex.xs="100%" fxFlex.sm="100%" style="overflow: auto;">
     <mat-card>
         <mat-card-header>
             <mat-card-title>Respuestas recomendadas</mat-card-title>
         </mat-card-header>
-        <mat-card-content>
+        <mat-card-content >
             <div *ngFor="let answer of possibleAnswers">
                 <div class="answer-container">
                     <div class="is-best-mark" *ngIf="answer.isBest" >
@@ -40,10 +40,10 @@
                     <div class="footer-answer">
                         <div *ngIf="!answer.isVoted">
                             <span> <b>Is it useful?</b></span>
-                            <button mat-button (click)="setAnswerVote(answer.id, answer.questionId, 1)" style="color:#009900;">Sí</button>
+                            <button mat-button (click)="setAnswerVote(answer.id, answer.questionId, 1)" class="verde">Sí</button>
                             <button mat-button (click)="setAnswerVote(answer.id, answer.questionId, 0)" class="azul">No</button>
                         </div>
-                        <span *ngIf="answer.isVoted"> <b>Answered</b></span>
+                        <span *ngIf="answer.isVoted"> <b class="verde">Voted</b></span>
                     </div>
                 </div>
                 <br/>

@@ -21,4 +21,5 @@ export class Question {
   public tags: Array<Tag>;
   public searchInterfaceId: SearchInterfaceEnum;
   public isSeen: boolean = false;
+  public isVoted: boolean = false;
 }

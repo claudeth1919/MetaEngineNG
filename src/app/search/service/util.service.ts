@@ -19,7 +19,7 @@ export class UtilService {
 
   public testDate() : Array<SearchedItem> {
             let item : SearchedItem = new SearchedItem(); 
-      item.questionId = Guid.create().toString();
+      item.questionElementId = Guid.create().toString();
       item.title = "Título";
       item.originId =  OriginEnum.STACK_OVERFLOW;
       item.content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
@@ -34,7 +34,7 @@ export class UtilService {
       item.question.answers.push(ans);
 
       let item2 : SearchedItem = new SearchedItem(); 
-      item2.questionId = Guid.create().toString();
+      item2.questionElementId = Guid.create().toString();
       item2.title = "Título";
       item2.originId =  OriginEnum.STACK_OVERFLOW;
       item2.content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
@@ -49,7 +49,7 @@ export class UtilService {
       item2.question.answers.push(ans2);
 
       let item3 : SearchedItem = new SearchedItem(); 
-      item3.questionId = Guid.create().toString();
+      item3.questionElementId = Guid.create().toString();
       item3.title = "Título";
       item3.originId =  OriginEnum.STACK_OVERFLOW;
       item3.content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
@@ -64,7 +64,7 @@ export class UtilService {
       item3.question.answers.push(ans3);
 
       let item4 : SearchedItem = new SearchedItem(); 
-      item4.questionId = Guid.create().toString();
+      item4.questionElementId = Guid.create().toString();
       item4.title = "Título";
       item4.originId =  OriginEnum.STACK_OVERFLOW;
       item4.content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
@@ -80,7 +80,7 @@ export class UtilService {
 
 
       let item5 : SearchedItem = new SearchedItem(); 
-      item5.questionId = Guid.create().toString();
+      item5.questionElementId = Guid.create().toString();
       item5.title = "Título";
       item5.originId =  OriginEnum.STACK_OVERFLOW;
       item5.content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
@@ -96,7 +96,7 @@ export class UtilService {
 
 
       let item6 : SearchedItem = new SearchedItem(); 
-      item6.questionId = Guid.create().toString();
+      item6.questionElementId = Guid.create().toString();
       item6.title = "Título";
       item6.originId =  OriginEnum.STACK_OVERFLOW;
       item6.content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";

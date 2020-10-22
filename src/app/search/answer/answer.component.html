@@ -1,17 +1,21 @@
 <h3 mat-dialog-title >
-    <div fxLayout="row nowrap" fxFlexFill fxLayoutAlign="start stretch">
+    <div fxLayout="row nowrap" fxFlexFill fxLayoutAlign="start stretch" >
         <div fxFlex="50%" fxFlexFill  fxFlex.xs="100%" fxFlex.sm="100%">
-            <span>Relevant content?</span>
-            <button mat-button (click)="setAnswerVote(question.id, 1)" style="color:red;">1</button>
-            <button mat-button (click)="setAnswerVote(question.id, 2)" style="color:red;">2</button>
-            <button mat-button (click)="setAnswerVote(question.id, 3)" class="azul">3</button>
-            <button mat-button (click)="setAnswerVote(question.id, 4)" style="color:#009900;">4</button>
-            <button mat-button (click)="setAnswerVote(question.id, 5)" style="color:#009900;">5</button>
+            <div fxLayout="row nowrap" fxFlexFill fxLayoutAlign="start stretch" *ngIf="!question.isVoted">
+                <div fxFlex="24%" fxFlexFill fxFlex.xs="100%" fxFlex.sm="100%">
+                    <span>Relevant content?</span>
+                </div>
+                <div fxFlex="76%" fxFlexFill fxFlex.xs="100%" fxFlex.sm="100%">
+                    <star-rating value="0" totalstars="{{totalstar}}" checkedcolor="#f3734c" uncheckedcolor="#4a4a4a" size="24px"
+                        readonly="false" (rate)="setQuestionVote($event)"></star-rating>
+                </div>
+            </div>
         </div>
         <div fxFlex="50%" fxFlexFill  fxFlex.xs="100%" fxFlex.sm="100%" align="end">
             <button mat-button (click)="closeModal()">Cerrar [X]</button>
         </div>
     </div>
+    <span *ngIf="question.isVoted"> <b class="verde">Voted</b></span>
 </h3>
 <mat-dialog-content class="mat-typography">
     <div class ="main-container">
@@ -49,10 +53,10 @@
                         <div class="footer-answer">
                             <div *ngIf="!answer.isVoted">
                                 <span> <b>Is it useful?</b></span>
-                                <button mat-button (click)="setAnswerVote(answer.id, 1)" style="color:#009900;">Sí</button>
+                                <button mat-button (click)="setAnswerVote(answer.id, 1)" class="verde">Sí</button>
                                 <button mat-button (click)="setAnswerVote(answer.id, 0)" class="azul">No</button>
                             </div>
-                            <span *ngIf="answer.isVoted"> <b>Answered</b></span>
+                            <span *ngIf="answer.isVoted"> <b class="verde">Voted</b></span>
                         </div>
                     </div>
                     <br/>

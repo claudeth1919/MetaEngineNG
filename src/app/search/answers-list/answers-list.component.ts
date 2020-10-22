@@ -60,12 +60,14 @@ export class AnswersListComponent implements OnInit {
       .subscribe(response => {
         console.log(response);
         this.searchedItems.forEach(element => {
-          if(element.questionId == response.question.id ){
-            element.question.isSeen = response.question.isSeen;
-            if (element.question.answers!=undefined){
-              element.question.answers.forEach(ans => {
-                ans.isVoted = (response.question.answers.filter(x => x.id == ans.id))[0].isVoted;
-              });
+          if (element.question!=undefined){
+            if (element.question.id == response.question.id) {
+              element.question.isSeen = response.question.isSeen;
+              if (element.question.answers != undefined) {
+                element.question.answers.forEach(ans => {
+                  ans.isVoted = (response.question.answers.filter(x => x.id == ans.id))[0].isVoted;
+                });
+              }
             }
           }
         });
@@ -78,18 +80,21 @@ export class AnswersListComponent implements OnInit {
     this.completeSentence = this.route.snapshot.paramMap.get("searchWords");
     this.searchWords = encodeURIComponent(this.completeSentence);
     console.log(this.searchWords);
-    
     this.myHttp.getKeyWords(this.searchWords).subscribe((res: Array<string>) => {
       console.log(res);
       this.arrayKeyWords = res;
     }, err => {
       console.log(err);
     });
-    //this.getSearchItems();
-    this.searchedItems = this.util.testDate();
-    this.setSearchedItemOrder();
-    this.setRecomendedAnswers();
-    this.loading.hide();
+    this.getSearchItems();
+    //this.test();//Para probar
+  }
+
+  private test(){
+    this.searchedItems = this.util.testDate(); //Para probar
+    this.setSearchedItemOrder(); //Para probar
+    this.setRecomendedAnswers(); //Para probar
+    this.loading.hide(); //Para probar
   }
 
   private getSearchItems(){
@@ -102,7 +107,7 @@ export class AnswersListComponent implements OnInit {
       this.loading.hide();
       console.log(err);
     }); 
-
+/*
     this.myHttp.bingSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
@@ -141,40 +146,40 @@ export class AnswersListComponent implements OnInit {
       this.loading.hide();
       console.log(err);
     });
-
+*/
   }
 
   private setSearchedItemOrder(){
-    let searchedItemsTemp : Array<SearchedItem> = new Array<SearchedItem>();
-    let googledFirst : SearchedItem = this.searchedItems.find(x=> x.searchInterfaceId == SearchInterfaceEnum.GOOGLE_API);
-    if(googledFirst!=undefined){
-         searchedItemsTemp.push(googledFirst);
-         this.searchedItems = this.searchedItems.filter(x=> x.questionId != googledFirst.questionId);
-    }
-    this.searchedItems.forEach(item=>{
-        if(item!=undefined) searchedItemsTemp.push(item);
+    this.searchedItems.sort(function (a, b) {
+      if (a.searchInterfaceId < b.searchInterfaceId) {
+        return 1;
+      }
+      if (a.searchInterfaceId > b.searchInterfaceId) {
+        return -1;
+      }
+      return 0;
     });
-    this.searchedItems = searchedItemsTemp;
   }
 
   private setRecomendedAnswers(){
     this.possibleAnswers= new Array<Answer>();
-    let filterAnswers = this.searchedItems.filter(item=> item.question != undefined && item.question.answers != undefined);
-    filterAnswers = this.searchedItems.filter(item=> item.question.answers != undefined);
-    filterAnswers = this.searchedItems.filter(item=> item.question.answers.length > 0);
-    if(filterAnswers.length > 0){
-        let first:Answer = filterAnswers[0].question.answers[0];
-        this.possibleAnswers.push(first);
-        if(filterAnswers.length >= 1){
-            let second:Answer = filterAnswers[1].question.answers[0];
-            this.possibleAnswers.push(second);
-        }
-        console.log(this.possibleAnswers);
-        this.possibleAnswers.forEach((element : Answer) => {
-            this.metaUtilService.editAnswerHTML(element);
-            this.metaUtilService.remarkTextAnswer(element, ["error c#"] /*this.arrayKeyWords*/);
-        });
+    let filterAnswers = this.searchedItems.filter(item=> item.question != undefined && item.question != null);
+    if (filterAnswers.length == 0) return;
+    filterAnswers = filterAnswers.filter(item=> item.question.answers != null &&  item.question.answers != undefined);
+    if (filterAnswers.length == 0) return;
+    filterAnswers = filterAnswers.filter(item=> item.question.answers.length > 0);
+    if (filterAnswers.length == 0) return;
+    let first:Answer = filterAnswers[0].question.answers[0];
+    this.possibleAnswers.push(first);
+    if(filterAnswers.length >= 1){
+        let second:Answer = filterAnswers[1].question.answers[0];
+        this.possibleAnswers.push(second);
     }
+    console.log(this.possibleAnswers);
+    this.possibleAnswers.forEach((element : Answer) => {
+        this.metaUtilService.editAnswerHTML(element);
+      if (this.arrayKeyWords !=undefined) this.metaUtilService.remarkTextAnswer(element, this.arrayKeyWords);
+    });
   }
 
   private setSesionId(){
@@ -189,25 +194,26 @@ export class AnswersListComponent implements OnInit {
   }
 
   private getQuestions(){
-    let index = 1;
     this.searchedItems.forEach(item => {
-      //if(index == 1){
-        if (item.question == undefined) {
-          this.myHttp.getQuestion(item.originId, item.questionId, item.searchInterfaceId, this.arrayKeyWords, false, this.completeSentence, this.userSearchId, this.userSesionId).subscribe((res: Question) => {
-            console.log(res);
+      if (item.question == undefined) {
+        this.myHttp.getQuestion(item.originId, item.questionElementId, item.searchInterfaceId, this.arrayKeyWords, false, this.completeSentence, this.userSearchId, this.userSesionId).subscribe((res: Question) => {
+          if (res == null || res == undefined){
+            this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
+          } else if (res.answers == undefined || res.answers == null) {
+            this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
+          } else if (res.answers.length == 0){
+            this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
+          }else{
             item.question = res;
-            if (res.answers == undefined) {
-              if (res.answers.length == 0) this.searchedItems = this.searchedItems.filter(x => x.questionId != item.questionId);
-            }
-            console.log(this.searchedItems);
-          }, err => {
-            console.log(err);
-            this.searchedItems = this.searchedItems.filter(x => x.questionId != item.questionId);
-            console.log(this.searchedItems);
-          });
-       // }
+          }
+          this.setSearchedItemOrder();
+          this.setRecomendedAnswers();
+        }, err => {
+          console.log(err);
+          this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
+          console.log(this.searchedItems);
+        });
       }
-      index++
     });
 
   }
@@ -215,7 +221,7 @@ export class AnswersListComponent implements OnInit {
   public setAnswerVote(answerId: string, questionId:string, vote: number){
     console.log("setAnswerVote: " + vote);
     
-    this.myHttp.updateAnswerInteractionWithValue(questionId, answerId , InteractionTypeEnum.PUBLICATION_IS_SEEN, vote, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
+    this.myHttp.updateAnswerInteractionWithValue(questionId, answerId , InteractionTypeEnum.ANSWER_VOTED, vote, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
       console.log("RE: " + res);
       this.searchedItems.filter(x=> x.question!=undefined && x.question.id == questionId).forEach(item=>{
           (item.question.answers.filter(x=> x.id == answerId))[0].isVoted = res;
@@ -225,7 +231,6 @@ export class AnswersListComponent implements OnInit {
             });
           }
       });
-      
     }, err => {
       console.log(err);
     });

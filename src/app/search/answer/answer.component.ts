@@ -9,6 +9,8 @@ import { Answer } from '../entities/answers.entity';
 import { LoadingService } from '../../core/services/loading.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { StarRatingComponent } from 'ng-starrating';
+import { RatingModule } from 'ng-starrating';
 import { Guid } from "guid-typescript";
 
 @Component({
@@ -25,6 +27,7 @@ export class AnswerComponent implements OnInit {
   public question: Question = new Question();
   private userSearchId: Guid;
   private userSesionId: Guid;
+  totalstar = 5;
 
   constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public dialogRef: MatDialogRef<AnswerComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private metaUtilService: MetaEngineUtilService, private snackBar: MatSnackBar) { }
 
@@ -72,6 +75,20 @@ export class AnswerComponent implements OnInit {
     this.dialogRef.close({ question: this.question });
   }
 
+  setQuestionVote($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {
+    this.myHttp.updateQuestionInteractionWithValue(this.question.id, InteractionTypeEnum.QUESTION_VOTED, $event.newValue, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
+      console.log("RE: " + res);
+      this.question.isVoted = res;
+      if (res) {
+        this.snackBar.open(this.metaUtilService.messageAfterVote, undefined, {
+          duration: 2000
+        });
+      }
+    }, err => {
+      console.log(err);
+    });
+  }
+
   public getAnswersAmount() : number{
     if (this.question.answers == null) return 0;
     return this.question.answers.length;
@@ -79,7 +96,7 @@ export class AnswerComponent implements OnInit {
 
   public setAnswerVote(answerId: string, vote: number){
     console.log("setAnswerVote: " + vote);
-    this.myHttp.updateAnswerInteractionWithValue(this.question.id, answerId , InteractionTypeEnum.PUBLICATION_IS_SEEN, vote, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
+    this.myHttp.updateAnswerInteractionWithValue(this.question.id, answerId , InteractionTypeEnum.ANSWER_VOTED, vote, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
       console.log("RE: " + res);
       (this.question.answers.filter(x => x.id == answerId))[0].isVoted = res;
       if(res){

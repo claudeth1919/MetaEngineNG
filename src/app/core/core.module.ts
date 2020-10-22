@@ -33,6 +33,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LoadingComponent } from './loading/loading.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RatingModule } from 'ng-starrating';
 
 @NgModule({
   declarations: [LoadingComponent],
@@ -69,6 +70,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     NgxPaginationModule,
     FlexLayoutModule,
     MatSnackBarModule,
+    RatingModule,
   ],
   exports: [
     HttpClientModule,
@@ -102,6 +104,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     NgxPaginationModule,
     FlexLayoutModule,
     MatSnackBarModule,
+    RatingModule,
   ],
   entryComponents: [
     LoadingComponent,

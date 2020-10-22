@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "~9.0.6",
     "@angular/router": "~9.0.6",
     "guid-typescript": "^1.0.9",
+    "ng-starrating": "^1.0.20",
     "ngx-pagination": "^5.0.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
