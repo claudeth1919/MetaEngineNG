@@ -3,35 +3,6 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-::ng-deep blockquote{
-    background-color: #ececec;
-    border-left: 2px solid #909090;
-    padding: 0.02em 16px;
-    overflow-x: auto;
-}
-
-::ng-deep pre{
-    background-color: #ececec;
-    padding: 0.02em 16px;
-    overflow-x: auto;
-    padding-top: 6px;
-    border-radius: 16px;
-    padding-bottom: 5px;
-}
-
-::ng-deep code{
-    background-color: #ececec;
-    padding: 0.01em 5px;
-    overflow-x: auto;
-    padding-top: 6px;
-    border-radius: 16px;
-    padding-bottom: 5px;
-}
-
-::ng-deep img{
-    max-width: 99%;
-}
-
 .text{
     display: block;
     width: 100%;

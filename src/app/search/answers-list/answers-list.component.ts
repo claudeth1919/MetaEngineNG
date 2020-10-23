@@ -28,6 +28,7 @@ export class AnswersListComponent implements OnInit {
   private completeSentence : string;
   private userSearchId: Guid =  Guid.create();
   private userSesionId: Guid;
+  public isLoading:boolean = true;
 
   public STACK_OVERFLOW = OriginEnum.STACK_OVERFLOW;
   public NET = OriginEnum.NET;
@@ -75,7 +76,6 @@ export class AnswersListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loading.show();
     this.setSesionId();
     this.completeSentence = this.route.snapshot.paramMap.get("searchWords");
     this.searchWords = encodeURIComponent(this.completeSentence);
@@ -94,56 +94,56 @@ export class AnswersListComponent implements OnInit {
     this.searchedItems = this.util.testDate(); //Para probar
     this.setSearchedItemOrder(); //Para probar
     this.setRecomendedAnswers(); //Para probar
-    this.loading.hide(); //Para probar
+    this.isLoading = false;
   }
 
   private getSearchItems(){
     this.myHttp.googleSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
-      this.loading.hide();
+      this.isLoading = false;
       this.getQuestions();
     }, err => {
-      this.loading.hide();
+      this.isLoading = false;
       console.log(err);
     }); 
 /*
     this.myHttp.bingSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
-      this.loading.hide();
+      this.isLoading = false;
       this.getQuestions();
     }, err => {
-      this.loading.hide();
+      this.isLoading = false;
       console.log(err);
     });
     
     this.myHttp.githubSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
-      this.loading.hide();
+      this.isLoading = false;
       this.getQuestions();
     }, err => {
-      this.loading.hide();
+      this.isLoading = false;
       console.log(err);
     });
     
     this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
-      this.loading.hide();
+      this.isLoading = false;
       this.getQuestions();
     }, err => {
-      this.loading.hide();
+      this.isLoading = false;
       console.log(err);
     });
 
     this.myHttp.soSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
       this.searchedItems = this.searchedItems.concat(res);
-      this.loading.hide();
+      this.isLoading = false;
     }, err => {
-      this.loading.hide();
+      this.isLoading = false;
       console.log(err);
     });
 */

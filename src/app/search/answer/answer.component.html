@@ -1,12 +1,13 @@
 <h3 mat-dialog-title >
     <div fxLayout="row nowrap" fxFlexFill fxLayoutAlign="start stretch" >
         <div fxFlex="50%" fxFlexFill  fxFlex.xs="100%" fxFlex.sm="100%">
-            <div fxLayout="row nowrap" fxFlexFill fxLayoutAlign="start stretch" *ngIf="!question.isVoted">
+            <div fxLayout="row nowrap" fxFlexFill fxLayoutAlign="start stretch">
                 <div fxFlex="24%" fxFlexFill fxFlex.xs="100%" fxFlex.sm="100%">
-                    <span>Relevant content?</span>
+                    <span *ngIf="!question.isVoted">Relevant content?</span>
+                    <span *ngIf="question.isVoted"> <b class="verde">Voted</b></span>
                 </div>
                 <div fxFlex="76%" fxFlexFill fxFlex.xs="100%" fxFlex.sm="100%">
-                    <star-rating value="0" totalstars="{{totalstar}}" checkedcolor="#f3734c" uncheckedcolor="#4a4a4a" size="24px"
+                    <star-rating *ngIf="!question.isVoted" value="0" totalstars="{{totalstar}}" checkedcolor="#f3734c" uncheckedcolor="#4a4a4a" size="24px"
                         readonly="false" (rate)="setQuestionVote($event)"></star-rating>
                 </div>
             </div>
@@ -15,7 +16,6 @@
             <button mat-button (click)="closeModal()">Cerrar [X]</button>
         </div>
     </div>
-    <span *ngIf="question.isVoted"> <b class="verde">Voted</b></span>
 </h3>
 <mat-dialog-content class="mat-typography">
     <div class ="main-container">
