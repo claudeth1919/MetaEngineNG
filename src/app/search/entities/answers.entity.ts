@@ -10,4 +10,5 @@ export class Answer {
     public userScore: number;
     public questionId: string;
     public isVoted:boolean = false;
+    public hasError: boolean = false;
 }

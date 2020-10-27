@@ -50,7 +50,7 @@
                             <img src="/assets/img/best-answer-mark.png" alt="Best Answer" width="28px">
                         </div>
                         <div mat-line [innerHTML]="answer.body" class="answer-item"></div>
-                        <div class="footer-answer">
+                        <div class="footer-answer" *ngIf="!question.hasError">
                             <div *ngIf="!answer.isVoted">
                                 <span> <b>Is it useful?</b></span>
                                 <button mat-button (click)="setAnswerVote(answer.id, 1)" class="verde">Sí</button>

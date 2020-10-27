@@ -22,4 +22,5 @@ export class Question {
   public searchInterfaceId: SearchInterfaceEnum;
   public isSeen: boolean = false;
   public isVoted: boolean = false;
+  public hasError: boolean = false;
 }

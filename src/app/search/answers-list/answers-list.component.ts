@@ -29,6 +29,7 @@ export class AnswersListComponent implements OnInit {
   private userSearchId: Guid =  Guid.create();
   private userSesionId: Guid;
   public isLoading:boolean = true;
+  private timeInterval:number = 0;
 
   public STACK_OVERFLOW = OriginEnum.STACK_OVERFLOW;
   public NET = OriginEnum.NET;
@@ -103,58 +104,21 @@ export class AnswersListComponent implements OnInit {
       this.searchedItems = this.searchedItems.concat(res);
       this.isLoading = false;
       this.getQuestions();
+      this.getMicrosoft();
     }, err => {
       this.isLoading = false;
       console.log(err);
-    }); 
-/*
-    this.myHttp.bingSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
-      console.log(res);
-      this.searchedItems = this.searchedItems.concat(res);
-      this.isLoading = false;
-      this.getQuestions();
-    }, err => {
-      this.isLoading = false;
-      console.log(err);
+      this.getMicrosoft();
     });
-    
-    this.myHttp.githubSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
-      console.log(res);
-      this.searchedItems = this.searchedItems.concat(res);
-      this.isLoading = false;
-      this.getQuestions();
-    }, err => {
-      this.isLoading = false;
-      console.log(err);
-    });
-    
-    this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
-      console.log(res);
-      this.searchedItems = this.searchedItems.concat(res);
-      this.isLoading = false;
-      this.getQuestions();
-    }, err => {
-      this.isLoading = false;
-      console.log(err);
-    });
-
-    this.myHttp.soSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
-      console.log(res);
-      this.searchedItems = this.searchedItems.concat(res);
-      this.isLoading = false;
-    }, err => {
-      this.isLoading = false;
-      console.log(err);
-    });
-*/
   }
-
+ 
   private setSearchedItemOrder(){
+    console.log("setSearchedItemOrder");
     this.searchedItems.sort(function (a, b) {
-      if (a.searchInterfaceId < b.searchInterfaceId) {
+      if (a.searchInterfaceId > b.searchInterfaceId) {
         return 1;
       }
-      if (a.searchInterfaceId > b.searchInterfaceId) {
+      if (a.searchInterfaceId < b.searchInterfaceId) {
         return -1;
       }
       return 0;
@@ -162,6 +126,7 @@ export class AnswersListComponent implements OnInit {
   }
 
   private setRecomendedAnswers(){
+    console.log("setRecomendedAnswers");
     this.possibleAnswers= new Array<Answer>();
     let filterAnswers = this.searchedItems.filter(item=> item.question != undefined && item.question != null);
     if (filterAnswers.length == 0) return;
@@ -169,11 +134,17 @@ export class AnswersListComponent implements OnInit {
     if (filterAnswers.length == 0) return;
     filterAnswers = filterAnswers.filter(item=> item.question.answers.length > 0);
     if (filterAnswers.length == 0) return;
-    let first:Answer = filterAnswers[0].question.answers[0];
-    this.possibleAnswers.push(first);
+    let first:Question = filterAnswers[0].question;
+    first.answers[0].hasError = first.hasError;
+    this.possibleAnswers.push(first.answers[0]);
     if(filterAnswers.length >= 1){
-        let second:Answer = filterAnswers[1].question.answers[0];
-        this.possibleAnswers.push(second);
+      if (filterAnswers[1]!=undefined){
+        if (filterAnswers[1].question != undefined) {
+          let second: Question = filterAnswers[1].question;
+          second.answers[0].hasError = second.hasError;
+          this.possibleAnswers.push(second.answers[0]);
+        }
+      }
     }
     console.log(this.possibleAnswers);
     this.possibleAnswers.forEach((element : Answer) => {
@@ -196,42 +167,104 @@ export class AnswersListComponent implements OnInit {
   private getQuestions(){
     this.searchedItems.forEach(item => {
       if (item.question == undefined) {
-        this.myHttp.getQuestion(item.originId, item.questionElementId, item.searchInterfaceId, this.arrayKeyWords, false, this.completeSentence, this.userSearchId, this.userSesionId).subscribe((res: Question) => {
-          if (res == null || res == undefined){
-            this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
-          } else if (res.answers == undefined || res.answers == null) {
-            this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
-          } else if (res.answers.length == 0){
-            this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
-          }else{
-            item.question = res;
-          }
-          this.setSearchedItemOrder();
-          this.setRecomendedAnswers();
-        }, err => {
-          console.log(err);
-          this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
-          console.log(this.searchedItems);
-        });
+        setTimeout(() => { this.getQuestionHTTP(item) }, this.timeInterval);
+        this.timeInterval = this.timeInterval + 4300;
+        console.log("Intervalo: " + this.timeInterval);
       }
     });
+  }
 
+  getQuestionHTTP(item: SearchedItem){
+    this.myHttp.getQuestion(item.originId, item.questionElementId, item.searchInterfaceId, this.arrayKeyWords, false, this.completeSentence, this.userSearchId, this.userSesionId).subscribe((res: Question) => {
+      if (res == null || res == undefined) {
+        this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
+        console.log("1.- No :(");
+      } else if (res.answers == undefined || res.answers == null) {
+        this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
+        console.log("2.- No :(");
+      } else if (res.answers.length == 0) {
+        this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
+        console.log("3.- No :(");
+      } else {
+        item.question = res;
+        console.log("Asignada");
+        this.setSearchedItemOrder();
+        this.setRecomendedAnswers();
+      }
+    }, err => {
+      console.log(err);
+      this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
+      console.log(this.searchedItems);
+    });
   }
 
   public setAnswerVote(answerId: string, questionId:string, vote: number){
     console.log("setAnswerVote: " + vote);
-    
     this.myHttp.updateAnswerInteractionWithValue(questionId, answerId , InteractionTypeEnum.ANSWER_VOTED, vote, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
       console.log("RE: " + res);
       this.searchedItems.filter(x=> x.question!=undefined && x.question.id == questionId).forEach(item=>{
           (item.question.answers.filter(x=> x.id == answerId))[0].isVoted = res;
           if(res){
               this.snackBar.open(this.metaUtilService.messageAfterVote, undefined,{
-                    duration: 2000
+                duration: 2000
             });
           }
       });
     }, err => {
+      console.log(err);
+    });
+  }
+
+  private getMicrosoft() {
+    this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
+      console.log(res);
+      this.searchedItems = this.searchedItems.concat(res);
+      this.isLoading = false;
+      this.getQuestions();
+      this.getBing();
+    }, err => {
+      this.isLoading = false;
+      console.log(err);
+      this.getBing();
+    });
+  }
+
+  private getBing() {
+    this.myHttp.bingSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
+      console.log(res);
+      this.searchedItems = this.searchedItems.concat(res);
+      this.isLoading = false;
+      this.getQuestions();
+      this.getGithub();
+    }, err => {
+      this.isLoading = false;
+      console.log(err);
+      this.getGithub();
+    });
+  }
+
+  private getGithub() {
+    this.myHttp.githubSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
+      console.log(res);
+      this.searchedItems = this.searchedItems.concat(res);
+      this.isLoading = false;
+      this.getQuestions();
+      //this.getSO();
+    }, err => {
+      this.isLoading = false;
+      console.log(err);
+      //this.getSO();
+    });
+  }
+
+  private getSO() {
+    this.myHttp.soSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
+      console.log(res);
+      this.searchedItems = this.searchedItems.concat(res);
+      this.isLoading = false;
+      this.getQuestions();
+    }, err => {
+      this.isLoading = false;
       console.log(err);
     });
   }

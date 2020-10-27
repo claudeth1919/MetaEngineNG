@@ -26,7 +26,7 @@ export class MetaEngineUtilService {
       keywords.forEach(keyWord => {
            answer.body = answer.body.split(keyWord).join( "<b class=\"azul\" >" + keyWord + "</b>");
       });
-      console.log(answer.body);
+      console.log(answer);
   }
 
   private editHTML(str:string) : string{
