@@ -137,15 +137,21 @@ export class AnswersListComponent implements OnInit {
     let first:Question = filterAnswers[0].question;
     first.answers[0].hasError = first.hasError;
     this.possibleAnswers.push(first.answers[0]);
-    if(filterAnswers.length >= 1){
-      if (filterAnswers[1]!=undefined){
-        if (filterAnswers[1].question != undefined) {
-          let second: Question = filterAnswers[1].question;
-          second.answers[0].hasError = second.hasError;
-          this.possibleAnswers.push(second.answers[0]);
+    if (first.answers.length >= 1){ //Si la primera de google tiene más de una respuesta
+      first.answers[1].hasError = first.hasError;
+      this.possibleAnswers.push(first.answers[1]);
+    }else{
+      if (filterAnswers.length >= 1) {
+        if (filterAnswers[1] != undefined) {
+          if (filterAnswers[1].question != undefined) {
+            let second: Question = filterAnswers[1].question;
+            second.answers[0].hasError = second.hasError;
+            this.possibleAnswers.push(second.answers[0]);
+          }
         }
       }
     }
+    
     console.log(this.possibleAnswers);
     this.possibleAnswers.forEach((element : Answer) => {
         this.metaUtilService.editAnswerHTML(element);
@@ -221,11 +227,11 @@ export class AnswersListComponent implements OnInit {
       this.searchedItems = this.searchedItems.concat(res);
       this.isLoading = false;
       this.getQuestions();
-      this.getBing();
+      //this.getBing();
     }, err => {
       this.isLoading = false;
       console.log(err);
-      this.getBing();
+      //this.getBing();
     });
   }
 
