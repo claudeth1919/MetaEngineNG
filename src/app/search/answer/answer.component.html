@@ -1,6 +1,6 @@
 <h3 mat-dialog-title >
     <div fxLayout="row nowrap" fxFlexFill fxLayoutAlign="start stretch" >
-        <div fxFlex="50%" fxFlexFill  fxFlex.xs="100%" fxFlex.sm="100%">
+        <div fxFlex="50%" fxFlexFill  fxFlex.xs="100%" fxFlex.sm="100%"  *ngIf="!isLoading">
             <div fxLayout="row nowrap" fxFlexFill fxLayoutAlign="start stretch">
                 <div fxFlex="24%" fxFlexFill fxFlex.xs="100%" fxFlex.sm="100%">
                     <span *ngIf="!question.isVoted">Relevant content?</span>
@@ -18,7 +18,10 @@
     </div>
 </h3>
 <mat-dialog-content class="mat-typography">
-    <div class ="main-container">
+    <div class="item-loading" *ngIf="isLoading">
+        <mat-spinner></mat-spinner>
+    </div>
+    <div class ="main-container" *ngIf="!isLoading">
         <mat-card id="question-container">
             <mat-card-header>
                 <div mat-card-avatar class="origin-{{originId}}-image"></div>

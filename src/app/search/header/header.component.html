@@ -7,7 +7,7 @@
     
     <form [formGroup]="searchForm" (ngSubmit)="searchAnswers()">
         <mat-form-field floatLabel="never">
-            <input matInput formControlName="searchWords" placeholder="Search" autocomplete="off" autofocus class="main-input" maxlength="199">
+            <input matInput formControlName="searchWords" placeholder="Search (english words only)" autocomplete="off" autofocus class="main-input" maxlength="199">
         </mat-form-field>
         <button mat-icon-button type="submit">
             <mat-icon>search</mat-icon>

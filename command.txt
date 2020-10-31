@@ -1,1 +1,2 @@
+ ng build --prod --vendor-chunk=true --output-hashing=none
  ng build --prod --vendor-chunk=true --base-href --output-hashing=none

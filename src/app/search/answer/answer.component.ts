@@ -27,12 +27,12 @@ export class AnswerComponent implements OnInit {
   public question: Question = new Question();
   private userSearchId: Guid;
   private userSesionId: Guid;
+  public isLoading:boolean = true;
   totalstar = 5;
 
   constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public dialogRef: MatDialogRef<AnswerComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private metaUtilService: MetaEngineUtilService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.loading.show();
     this.originId = this.data.originId;
     this.questionId = this.data.questionId;
     this.searchInterfaceId = this.data.searchInterfaceId;
@@ -46,19 +46,19 @@ export class AnswerComponent implements OnInit {
       console.log("Entrada 1 " + this.questionId);
       this.myHttp.getQuestion(this.originId, this.questionId, this.searchInterfaceId, this.arrayKeyWords, true, this.completeSentence, this.userSearchId, this.userSesionId).subscribe((res: Question) => {
         console.log(res);
-        this.loading.hide();
+        this.isLoading = false;
         this.question = res;
         this.question.isSeen = true;
         this.metaUtilService.editQuestionHTML(this.question);
       }, err => {
         console.log(err);
-        this.loading.hide();
+        this.isLoading = false;
       });
     }else{
       this.question = this.data.question;
       this.metaUtilService.editQuestionHTML(this.question);
       console.log("Entrada 2 " + this.question.id);
-      this.loading.hide();
+      this.isLoading = false;
       if (!this.question.isSeen){
         this.myHttp.updateQuestionInteraction(this.question.id, InteractionTypeEnum.PUBLICATION_IS_SEEN, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
           console.log("RE: " + res);

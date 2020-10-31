@@ -23,4 +23,5 @@ export class Question {
   public isSeen: boolean = false;
   public isVoted: boolean = false;
   public hasError: boolean = false;
+  public matchesAmount: number;
 }

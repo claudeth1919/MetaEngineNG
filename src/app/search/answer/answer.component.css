@@ -57,3 +57,11 @@ mat-card{
 .mat-dialog-content{
     padding: 0px;
 }
+
+
+.item-loading{
+  padding-left: 20%;
+  padding-top: 10%;
+  width: auto;
+  height: auto;
+}

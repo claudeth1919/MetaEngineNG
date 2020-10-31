@@ -6,8 +6,8 @@
         <form class="main-form" [formGroup]="searchForm" (ngSubmit)="searchAnswers()">
             <mat-form-field class="main-input-full-width" *ngIf="!areAdvancedOptionsDisplayed">
                 <mat-icon matSuffix>search</mat-icon>
-                <input matInput #message formControlName="searchWords" maxlength="199" minlength="5" placeholder="Search" autocomplete="off" autofocus class="main-input">
-                <mat-hint align="start"><strong>Try to use key words</strong> </mat-hint>
+                <input matInput #message formControlName="searchWords" maxlength="199" minlength="5" placeholder="Search (english words only)" autocomplete="off" autofocus class="main-input">
+                <mat-hint align="start"><strong>Try to use key words (english words only)</strong> </mat-hint>
                 <mat-error *ngIf="searchWords.hasError('required')">Required field</mat-error>
             </mat-form-field>
             

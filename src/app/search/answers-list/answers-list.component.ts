@@ -78,7 +78,8 @@ export class AnswersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.setSesionId();
-    this.completeSentence = this.route.snapshot.paramMap.get("searchWords");
+    let usedphrase = this.route.snapshot.paramMap.get("searchWords");
+    this.completeSentence = usedphrase.split("+").join("plus ");
     this.searchWords = encodeURIComponent(this.completeSentence);
     console.log(this.searchWords);
     this.myHttp.getKeyWords(this.searchWords).subscribe((res: Array<string>) => {
@@ -101,14 +102,22 @@ export class AnswersListComponent implements OnInit {
   private getSearchItems(){
     this.myHttp.googleSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
-      this.searchedItems = this.searchedItems.concat(res);
-      this.isLoading = false;
-      this.getQuestions();
-      this.getMicrosoft();
+      if(res!=undefined){
+        if (res.length>0){
+          this.searchedItems = this.searchedItems.concat(res);
+          this.getQuestions();
+          this.getMicrosoft();
+          this.isLoading = false;
+        }else{
+          this.getBing();  
+        }
+      }else{
+        this.getBing();
+      }
     }, err => {
       this.isLoading = false;
       console.log(err);
-      this.getMicrosoft();
+      this.getBing();
     });
   }
  
@@ -137,7 +146,7 @@ export class AnswersListComponent implements OnInit {
     let first:Question = filterAnswers[0].question;
     first.answers[0].hasError = first.hasError;
     this.possibleAnswers.push(first.answers[0]);
-    if (first.answers.length >= 1){ //Si la primera de google tiene más de una respuesta
+    if (first.answers.length >= 2){ //Si la primera de google tiene más de una respuesta
       first.answers[1].hasError = first.hasError;
       this.possibleAnswers.push(first.answers[1]);
     }else{
@@ -224,9 +233,11 @@ export class AnswersListComponent implements OnInit {
   private getMicrosoft() {
     this.myHttp.microsoftSearch(this.searchWords).subscribe((res: Array<SearchedItem>) => {
       console.log(res);
-      this.searchedItems = this.searchedItems.concat(res);
+      if(res!=undefined) {
+        this.searchedItems = this.searchedItems.concat(res);
+        this.getQuestions();
+      }
       this.isLoading = false;
-      this.getQuestions();
       //this.getBing();
     }, err => {
       this.isLoading = false;
@@ -241,11 +252,13 @@ export class AnswersListComponent implements OnInit {
       this.searchedItems = this.searchedItems.concat(res);
       this.isLoading = false;
       this.getQuestions();
-      this.getGithub();
+      //this.getGithub();
+      this.getMicrosoft();
     }, err => {
       this.isLoading = false;
       console.log(err);
-      this.getGithub();
+      //this.getGithub();
+      this.getMicrosoft();
     });
   }
 
