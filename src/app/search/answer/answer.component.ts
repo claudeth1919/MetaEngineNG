@@ -3,22 +3,21 @@ import { ActivatedRoute } from "@angular/router";
 import { MyHttpRequestService } from '../service/my-http-request.service';
 import { RedirectService } from '../service/redirect.service';
 import { MetaEngineUtilService } from '../service/meta-engine-util.service';
-import { OriginEnum, SearchInterfaceEnum, InteractionTypeEnum } from '../service/common';
+import { OriginEnum, SearchInterfaceEnum, InteractionTypeEnum, ScreenSizeEnum } from '../service/common';
 import { Question } from '../entities/question.entity';
-import { Answer } from '../entities/answers.entity';
 import { LoadingService } from '../../core/services/loading.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StarRatingComponent } from 'ng-starrating';
-import { RatingModule } from 'ng-starrating';
 import { Guid } from "guid-typescript";
+import { TemplateComponent } from '../../search/service/template.component';
 
 @Component({
   selector: 'app-answer',
   templateUrl: './answer.component.html',
   styleUrls: ['./answer.component.css']
 })
-export class AnswerComponent implements OnInit {
+export class AnswerComponent extends TemplateComponent implements OnInit {
   public originId: OriginEnum;
   public searchInterfaceId: SearchInterfaceEnum;
   public questionId: string;
@@ -28,9 +27,11 @@ export class AnswerComponent implements OnInit {
   private userSearchId: Guid;
   private userSesionId: Guid;
   public isLoading:boolean = true;
-  totalstar = 5;
+  public totalstar:number = 5;
 
-  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public dialogRef: MatDialogRef<AnswerComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private metaUtilService: MetaEngineUtilService, private snackBar: MatSnackBar) { }
+  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public dialogRef: MatDialogRef<AnswerComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private metaUtilService: MetaEngineUtilService, private snackBar: MatSnackBar) {
+    super();
+  }
 
   ngOnInit(): void {
     this.originId = this.data.originId;
@@ -40,16 +41,18 @@ export class AnswerComponent implements OnInit {
     this.completeSentence = this.data.completeSentence;
     this.userSearchId = this.data.userSearchId;
     this.userSesionId = this.data.userSesionId;
-    
+    this.setFullModalIfIsNeeded();
     console.log(this.originId + " - " + this.questionId);
     if (this.data.question == undefined){
       console.log("Entrada 1 " + this.questionId);
       this.myHttp.getQuestion(this.originId, this.questionId, this.searchInterfaceId, this.arrayKeyWords, true, this.completeSentence, this.userSearchId, this.userSesionId).subscribe((res: Question) => {
         console.log(res);
         this.isLoading = false;
-        this.question = res;
-        this.question.isSeen = true;
-        this.metaUtilService.editQuestionHTML(this.question);
+        if (res != undefined && res != null){
+          this.question = res;
+          this.question.isSeen = true;
+          this.metaUtilService.editQuestionHTML(this.question);
+        }
       }, err => {
         console.log(err);
         this.isLoading = false;
@@ -59,6 +62,7 @@ export class AnswerComponent implements OnInit {
       this.metaUtilService.editQuestionHTML(this.question);
       console.log("Entrada 2 " + this.question.id);
       this.isLoading = false;
+      if(this.isLoremIpsumData) return;
       if (!this.question.isSeen){
         this.myHttp.updateQuestionInteraction(this.question.id, InteractionTypeEnum.PUBLICATION_IS_SEEN, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
           console.log("RE: " + res);
@@ -73,6 +77,16 @@ export class AnswerComponent implements OnInit {
   public closeModal(){
     console.log("Cerrar");
     this.dialogRef.close({ question: this.question });
+  }
+
+  private setFullModalIfIsNeeded(){
+    console.log("setFullModalIfIsNeeded " + this.screenSize);
+    if (this.screenSize == ScreenSizeEnum.MIDDLE || this.screenSize == ScreenSizeEnum.SMALL){
+      const contentContainer: Element = document.getElementsByTagName('mat-dialog-content')[0];
+      contentContainer.setAttribute("class", "full-dialog-container");
+      const hmtl: Element = document.getElementsByTagName('html')[0];
+      hmtl.setAttribute("style", "overflow-y: auto;"); //overflow-y: scroll;
+    }
   }
 
   setQuestionVote($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {

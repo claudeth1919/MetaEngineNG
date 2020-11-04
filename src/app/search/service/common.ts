@@ -18,3 +18,9 @@ export enum InteractionTypeEnum {
     ANSWER_VOTED = 3,
     PUBLICATION_IS_SEEN = 4,
 }
+
+export enum ScreenSizeEnum {
+    BIG = 1,
+    MIDDLE = 2,
+    SMALL = 3,
+}

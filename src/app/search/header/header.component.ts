@@ -3,16 +3,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MyHttpRequestService } from '../service/my-http-request.service';
+import { TemplateComponent } from '../../search/service/template.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent extends TemplateComponent implements OnInit {
   public searchForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService) { }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService) {
+    super();
+  }
 
   ngOnInit(): void {
     let lastSearchWords = this.route.snapshot.paramMap.get("searchWords");
@@ -30,7 +33,7 @@ export class HeaderComponent implements OnInit {
 
   public searchAnswers() {
     if (this.searchForm.get("searchWords").value!=''){
-      this.redirect.redirectToSearch(this.searchWords.value);
+      this.redirect.redirectToSearch(this.searchWords.value.split('+').join('plus '));
     }
     console.log(this.searchForm.get("searchWords").value);
   }

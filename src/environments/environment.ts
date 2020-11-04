@@ -5,8 +5,11 @@
 export const environment = {
   production: false,
   api: {
+   // search: "https://metaengine.azurewebsites.net/api/v1/search",
     search: "https://192.168.1.135:45455/api/v1/search",
+   // answer: "https://metaengine.azurewebsites.net/api/v1/answer",
     answer: "https://192.168.1.135:45455/api/v1/answer",
+   // userInteraction: "https://metaengine.azurewebsites.net/api/v1/userInteraction"
     userInteraction: "https://192.168.1.135:45455/api/v1/userInteraction"
   }
 };

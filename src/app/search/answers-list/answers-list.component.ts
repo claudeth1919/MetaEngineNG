@@ -5,9 +5,10 @@ import { Question } from '../entities/question.entity';
 import { Answer } from '../entities/answers.entity';
 import { MyHttpRequestService } from '../service/my-http-request.service';
 import { RedirectService } from '../service/redirect.service';
-import { OriginEnum, SearchInterfaceEnum, InteractionTypeEnum } from '../service/common';
+import { OriginEnum, SearchInterfaceEnum, InteractionTypeEnum, ScreenSizeEnum } from '../service/common';
 import { LoadingService } from '../../core/services/loading.service';
 import { ModalService } from '../../search/service/modal.service';
+import { TemplateComponent } from '../../search/service/template.component';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnswerComponent } from './../answer/answer.component';
@@ -20,7 +21,7 @@ import { UtilService } from '../service/util.service';
   templateUrl: './answers-list.component.html',
   styleUrls: ['./answers-list.component.css']
 })
-export class AnswersListComponent implements OnInit {
+export class AnswersListComponent extends TemplateComponent implements OnInit {
   private searchWords:string;
   private arrayKeyWords: Array<string>;
   public searchedItems: Array<SearchedItem> = new Array<SearchedItem>();
@@ -31,17 +32,21 @@ export class AnswersListComponent implements OnInit {
   public isLoading:boolean = true;
   private timeInterval:number = 0;
 
-  public STACK_OVERFLOW = OriginEnum.STACK_OVERFLOW;
-  public NET = OriginEnum.NET;
-  public GITHUB = OriginEnum.GITHUB;
-
   public page: number = 1;
   private modal: MatDialogRef<AnswerComponent>;
 
-  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public modalService: ModalService, public matDialog: MatDialog, private snackBar: MatSnackBar, public util : UtilService, private metaUtilService: MetaEngineUtilService) { }
+  constructor(private route: ActivatedRoute, private myHttp: MyHttpRequestService, private redirect: RedirectService, public loading: LoadingService, public modalService: ModalService, public matDialog: MatDialog, private snackBar: MatSnackBar, public util : UtilService, private metaUtilService: MetaEngineUtilService) {
+    super();
+    this.getScreenSize();
+  }
 
   public openModal(originId: OriginEnum, questionId: string, searchInterfaceId: SearchInterfaceEnum, question : Question) {
-    let config: MatDialogConfig = this.modalService.getConfigModal();
+    let config: MatDialogConfig = new MatDialogConfig();
+    if (this.screenSize == ScreenSizeEnum.MIDDLE || this.screenSize == ScreenSizeEnum.SMALL){
+      config = this.modalService.getConfigFullModal();
+    }else{
+      config = this.modalService.getConfigModal();
+    }
     config.data ={
       originId: originId,
       questionId: questionId,
@@ -79,17 +84,20 @@ export class AnswersListComponent implements OnInit {
   ngOnInit(): void {
     this.setSesionId();
     let usedphrase = this.route.snapshot.paramMap.get("searchWords");
-    this.completeSentence = usedphrase.split("+").join("plus ");
-    this.searchWords = encodeURIComponent(this.completeSentence);
+    this.completeSentence = usedphrase;
+    this.searchWords = encodeURIComponent(usedphrase);
     console.log(this.searchWords);
-    this.myHttp.getKeyWords(this.searchWords).subscribe((res: Array<string>) => {
-      console.log(res);
-      this.arrayKeyWords = res;
-    }, err => {
-      console.log(err);
-    });
-    this.getSearchItems();
-    //this.test();//Para probar
+    if(!this.isLoremIpsumData){
+      this.myHttp.getKeyWords(this.searchWords).subscribe((res: Array<string>) => {
+        console.log(res);
+        this.arrayKeyWords = res;
+      }, err => {
+        console.log(err);
+      });
+      this.getSearchItems();
+    }else{
+      this.test();//Para probar
+    }
   }
 
   private test(){
@@ -97,6 +105,7 @@ export class AnswersListComponent implements OnInit {
     this.setSearchedItemOrder(); //Para probar
     this.setRecomendedAnswers(); //Para probar
     this.isLoading = false;
+    this.arrayKeyWords = ["error c#"];
   }
 
   private getSearchItems(){

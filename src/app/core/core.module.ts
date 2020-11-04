@@ -40,6 +40,7 @@ import { RatingModule } from 'ng-starrating';
   imports: [
     CommonModule,
     MatSliderModule,
+    HttpClientModule,
     MatToolbarModule, 
     MatButtonModule, 
     MatSidenavModule, 

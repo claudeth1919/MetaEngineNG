@@ -18,7 +18,7 @@ export class UtilService {
   }
 
   public testDate() : Array<SearchedItem> {
-            let item : SearchedItem = new SearchedItem(); 
+      let item : SearchedItem = new SearchedItem(); 
       item.questionElementId = Guid.create().toString();
       item.title = "Título";
       item.originId =  OriginEnum.STACK_OVERFLOW;

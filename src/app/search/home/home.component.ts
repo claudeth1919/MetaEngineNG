@@ -23,25 +23,26 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.searchForm = this.fb.group({
       searchWords: ['', Validators.required],
-      advancedOptions: new FormArray([this.getNewAdvancedOption()])
+  //    advancedOptions: new FormArray([this.getNewAdvancedOption()])
     });
   }
-
+  /*
   private getNewAdvancedOption() : FormGroup{
     return this.fb.group({
       category: [this.categories[0], Validators.required],
       term: ['', [Validators.required]]
     });
   }
-
+*/
   get controls() { return this.searchForm.controls; }
   get advancedOptions() { return this.controls.advancedOptions as FormArray; }
   get searchWords() { return this.searchForm.get('searchWords'); }
 
+  /*
   public addSearchInput(){
     this.advancedOptions.push(this.getNewAdvancedOption());
   }
-
+*/
   public removeSearchInput(index:number){
     this.advancedOptions.removeAt(index);
   }
@@ -54,9 +55,10 @@ export class HomeComponent implements OnInit {
     if(!this.isFormValid()) return ;
 
     if (!this.areAdvancedOptionsDisplayed){
-      let searchString: string = encodeURIComponent(this.searchWords.value);
+      let searchString: string = encodeURIComponent(this.searchWords.value.split('+').join('plus '));
       this.redirect.redirectToSearch(searchString);
     }
+    /*
     else{
       let tags = [];
       let textErrors = [];
@@ -65,10 +67,10 @@ export class HomeComponent implements OnInit {
         if (item.get('category').value == this.ERROR_TEXT_CATEGORY) textErrors.push(item.get('term').value);
       });
       this.redirect.redirectToadvanceSearch(textErrors, tags);
+      console.log(this.searchForm.get("advancedOptions").value);
     }
-
+    */
     console.log(this.searchForm.get("searchWords").value);
-    console.log(this.searchForm.get("advancedOptions").value);
   }
 
   private isFormValid(): boolean{
