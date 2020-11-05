@@ -2,7 +2,7 @@ import { OriginEnum, ScreenSizeEnum } from '../service/common';
 import { HostListener } from "@angular/core";
 
 export class TemplateComponent{
-    public isLoremIpsumData: boolean = false; //CAMBIAR
+    public isLoremIpsumData: boolean = true; //CAMBIAR
 
     public STACK_OVERFLOW = OriginEnum.STACK_OVERFLOW;
     public NET = OriginEnum.NET;

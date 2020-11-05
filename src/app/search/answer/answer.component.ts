@@ -52,6 +52,7 @@ export class AnswerComponent extends TemplateComponent implements OnInit {
           this.question = res;
           this.question.isSeen = true;
           this.metaUtilService.editQuestionHTML(this.question);
+          this.scrollDown();
         }
       }, err => {
         console.log(err);
@@ -62,6 +63,7 @@ export class AnswerComponent extends TemplateComponent implements OnInit {
       this.metaUtilService.editQuestionHTML(this.question);
       console.log("Entrada 2 " + this.question.id);
       this.isLoading = false;
+      this.scrollDown();
       if(this.isLoremIpsumData) return;
       if (!this.question.isSeen){
         this.myHttp.updateQuestionInteraction(this.question.id, InteractionTypeEnum.PUBLICATION_IS_SEEN, this.userSearchId, this.userSesionId).subscribe((res: boolean) => {
@@ -121,6 +123,15 @@ export class AnswerComponent extends TemplateComponent implements OnInit {
     }, err => {
       console.log(err);
     });
+  }
+
+  private scrollDown(){
+    setTimeout(() => {
+      console.log("scrollDown");
+      const div: HTMLElement | null = document.getElementById("answersListHeader");
+      div.scrollIntoView({ behavior: "smooth", block: "start" });
+      console.log(div);
+    }, 500)
   }
 
   public getSourceTitle() : string{
