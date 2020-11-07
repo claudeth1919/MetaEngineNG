@@ -12,8 +12,9 @@ import { Guid } from "guid-typescript";
 })
 export class UtilService {
   constructor() { }
+  
   public encodeURL(str: string): string{
-    str = encodeURI(str);
+    str = encodeURIComponent(str);
     return str;
   }
 
@@ -105,6 +106,17 @@ export class UtilService {
       item5.question.answers = new Array<Answer>();
       let ans5 : Answer  = new Answer();
       ans5.body = "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
+      ans5.body += "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
+      ans5.body += "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
+      ans5.body += "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
+      ans5.body += "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
+      ans5.body += "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
+      ans5.body += "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
+      ans5.body += "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
+      ans5.body += "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
+      ans5.body += "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
+      ans5.body += "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
+      ans5.body += "La 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis, arcu eu hendrerit lacinia, ligula ante ultrices neque, eget feugiat purus leo non ex. Proin sed elit ipsum. Ut tincidunt nulla a efficitur gravida. Phasellus ornare tristique quam nec laoreet. Nullam nunc ex, mollis sed enim vitae,";
       ans5.isBest = true;
       item5.question.answers.push(ans5);
 

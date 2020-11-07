@@ -35,6 +35,10 @@ export class MyHttpRequestService {
     return this.httpClient.get<any>(`${this.userInteractionApi}/keyWords/${searchWords}`);
   }
 
+  getAutocompleteWords(searchWords: string): any{
+    return this.httpClient.get<any>(`${this.userInteractionApi}/autocomplete/${searchWords}`);
+  }
+
   updateQuestionInteraction(questionId: string, interactionType: InteractionTypeEnum, userSearchId: Guid, userSesionId: Guid): any {
     const headers = new HttpHeaders();
     headers.append('Accept', 'application/json');

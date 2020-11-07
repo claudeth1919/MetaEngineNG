@@ -2,7 +2,7 @@ import { OriginEnum, ScreenSizeEnum } from '../service/common';
 import { HostListener } from "@angular/core";
 
 export class TemplateComponent{
-    public isLoremIpsumData: boolean = true; //CAMBIAR
+    public isLoremIpsumData: boolean = false; //CAMBIAR
 
     public STACK_OVERFLOW = OriginEnum.STACK_OVERFLOW;
     public NET = OriginEnum.NET;
@@ -25,10 +25,10 @@ export class TemplateComponent{
     getScreenSize(event?) {
         this.screenHeight = window.innerHeight;
         this.screenWidth = window.innerWidth;
-        if (this.screenWidth <= 600) {
+        if (this.screenWidth <= 580) {
             this.screenSize = ScreenSizeEnum.SMALL;
         } 
-        else if (this.screenWidth > 600 && this.screenWidth <= 850) {
+        else if (this.screenWidth > 580 && this.screenWidth <= 850) {
             this.screenSize = ScreenSizeEnum.MIDDLE;
         } 
         else {

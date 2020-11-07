@@ -1,12 +1,17 @@
-<div (window:resize)="onResize($event)" class="main-div">
+<div class="main-div">
     <mat-card class="main-card">
         <br>
-        <mat-card-title>Just type your error, we'll take care of the rest!</mat-card-title>
+        <mat-card-title>Just type your question, we'll take care of the rest!</mat-card-title>
         
         <form class="main-form" [formGroup]="searchForm" (ngSubmit)="searchAnswers()">
-            <mat-form-field class="main-input-full-width" *ngIf="!areAdvancedOptionsDisplayed">
+            <mat-form-field class="main-input-full-width">
                 <mat-icon matSuffix>search</mat-icon>
-                <input matInput #message formControlName="searchWords" maxlength="199" minlength="5" placeholder="Search (english words only)" autocomplete="off" autofocus class="main-input">
+                <input matInput #message formControlName="searchWords" (ngModelChange)="getAutoComplete()" maxlength="199" minlength="4" placeholder="Search (english words only)" autocomplete="off" autofocus class="main-input" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" panelOpen="'true'" (optionSelected)="optionSelectedOnAutoComplete($event.option.value)">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
                 <mat-hint align="start"><strong>Try to use key words (english words only)</strong> </mat-hint>
                 <mat-error *ngIf="searchWords.hasError('required')">Required field</mat-error>
             </mat-form-field>

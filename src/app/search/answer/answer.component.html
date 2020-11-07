@@ -8,7 +8,7 @@
                 </div>
                 <div fxFlex="76%" fxFlexFill fxFlex.xs="100%" fxFlex.sm="100%">
                     <star-rating *ngIf="!question.isVoted" value="0" totalstars="{{totalstar}}" checkedcolor="#f3734c" uncheckedcolor="#4a4a4a" 
-                        size="{{screenSize != BIG_DEVICE ? '20px' : '24px'}}" readonly="false" (rate)="setQuestionVote($event)" ></star-rating>
+                        size="{{screenSize == BIG_DEVICE ? '24px' : (screenSize == SMALL_DEVICE ? '15px' : '20px' )}}" readonly="false" (rate)="setQuestionVote($event)" ></star-rating>
                 </div>
             </div>
         </div>

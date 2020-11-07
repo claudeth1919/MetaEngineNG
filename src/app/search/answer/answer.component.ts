@@ -130,8 +130,7 @@ export class AnswerComponent extends TemplateComponent implements OnInit {
       console.log("scrollDown");
       const div: HTMLElement | null = document.getElementById("answersListHeader");
       div.scrollIntoView({ behavior: "smooth", block: "start" });
-      console.log(div);
-    }, 500)
+    }, 650)
   }
 
   public getSourceTitle() : string{

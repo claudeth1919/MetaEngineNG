@@ -11,7 +11,7 @@
     <div class="item-loading" *ngIf="searchedItems.length == 0 && !isLoading">
         <span>No se encontraron registros</span>
     </div>
-    <ng-container *ngFor="let searchedItem of searchedItems | paginate: { id: 'index-page', itemsPerPage: 4, currentPage: page }">
+    <ng-container *ngFor="let searchedItem of searchedItems | paginate: { id: 'index-page', itemsPerPage: itemsPerPage, currentPage: page }">
         <mat-list-item>
             <mat-card>
                 <mat-card-header>
@@ -27,7 +27,7 @@
     </ng-container>
 
     <div class="has-text-centered">
-        <pagination-controls id="index-page" (pageChange)="page = $event" autoHide="true" responsive="true"></pagination-controls>
+        <pagination-controls id="index-page" (pageChange)="changePage($event)" autoHide="true" responsive="true"></pagination-controls>
     </div>
   </div>
   <!-- FLEX-CHILD - RIGHT -->
@@ -39,7 +39,7 @@
         <mat-spinner></mat-spinner>
     </div>
     
-    <mat-card *ngIf="possibleAnswers.length != 0" style="overflow: auto; max-height: 70%;">
+    <mat-card *ngIf="possibleAnswers.length != 0" style="overflow: auto; max-height: 76%;">
         <mat-card-content >
             <div *ngFor="let answer of possibleAnswers">
                 <div class="answer-container">

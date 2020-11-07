@@ -27,10 +27,11 @@ export class AnswersListComponent extends TemplateComponent implements OnInit {
   public searchedItems: Array<SearchedItem> = new Array<SearchedItem>();
   public possibleAnswers: Array<Answer> = new Array<Answer>();
   private completeSentence : string;
-  private userSearchId: Guid =  Guid.create();
+  private userSearchId: Guid = Guid.create();
   private userSesionId: Guid;
   public isLoading:boolean = true;
   private timeInterval:number = 0;
+  public itemsPerPage:number = 4;
 
   public page: number = 1;
   private modal: MatDialogRef<AnswerComponent>;
@@ -101,9 +102,9 @@ export class AnswersListComponent extends TemplateComponent implements OnInit {
   }
 
   private test(){
-    this.searchedItems = this.util.testDate(); //Para probar
-    this.setSearchedItemOrder(); //Para probar
-    this.setRecomendedAnswers(); //Para probar
+    this.searchedItems = this.util.testDate();
+    this.setSearchedItemOrder(); 
+    this.setRecomendedAnswers(); 
     this.isLoading = false;
     this.arrayKeyWords = ["error c#"];
   }
@@ -134,6 +135,9 @@ export class AnswersListComponent extends TemplateComponent implements OnInit {
     console.log("setSearchedItemOrder");
     this.searchedItems.sort(function (a, b) {
       if (a.searchInterfaceId > b.searchInterfaceId) {
+        return 1;
+      }
+      if (b.question.matchesAmount > a.question.matchesAmount){
         return 1;
       }
       if (a.searchInterfaceId < b.searchInterfaceId) {
@@ -172,7 +176,7 @@ export class AnswersListComponent extends TemplateComponent implements OnInit {
     
     console.log(this.possibleAnswers);
     this.possibleAnswers.forEach((element : Answer) => {
-        this.metaUtilService.editAnswerHTML(element);
+      this.metaUtilService.editAnswerHTML(element);
       if (this.arrayKeyWords !=undefined) this.metaUtilService.remarkTextAnswer(element, this.arrayKeyWords);
     });
   }
@@ -199,6 +203,9 @@ export class AnswersListComponent extends TemplateComponent implements OnInit {
   }
 
   getQuestionHTTP(item: SearchedItem){
+    console.log("getQuestionHTTP");
+    if ((this.page * this.itemsPerPage) <= this.searchedItems.filter(x => x.originId == OriginEnum.STACK_OVERFLOW).length) return;
+    console.log("getQuestionHTTP (enter)");
     this.myHttp.getQuestion(item.originId, item.questionElementId, item.searchInterfaceId, this.arrayKeyWords, false, this.completeSentence, this.userSearchId, this.userSesionId).subscribe((res: Question) => {
       if (res == null || res == undefined) {
         this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
@@ -220,6 +227,12 @@ export class AnswersListComponent extends TemplateComponent implements OnInit {
       this.searchedItems = this.searchedItems.filter(x => x.questionElementId != item.questionElementId);
       console.log(this.searchedItems);
     });
+  }
+
+  public changePage(event){
+    this.page = event;
+    console.log("page: " + event);
+    this.getQuestions();
   }
 
   public setAnswerVote(answerId: string, questionId:string, vote: number){

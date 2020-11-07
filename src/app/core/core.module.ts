@@ -30,6 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LoadingComponent } from './loading/loading.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -71,6 +72,7 @@ import { RatingModule } from 'ng-starrating';
     NgxPaginationModule,
     FlexLayoutModule,
     MatSnackBarModule,
+    MatAutocompleteModule,
     RatingModule,
   ],
   exports: [
@@ -105,6 +107,7 @@ import { RatingModule } from 'ng-starrating';
     NgxPaginationModule,
     FlexLayoutModule,
     MatSnackBarModule,
+    MatAutocompleteModule,
     RatingModule,
   ],
   entryComponents: [

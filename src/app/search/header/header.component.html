@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-    <img src="assets/img/code-logo.svg" width="33px"/>
+    <img src="assets/img/code-logo.svg" width="33px" (click)="redirectToHome()" class="select-pointer"/>
     <span class="select-pointer" (click)="redirectToHome()" *ngIf="screenSize != SMALL_DEVICE">
         Metasearch Engine
     </span>
@@ -7,7 +7,12 @@
     
     <form [formGroup]="searchForm" (ngSubmit)="searchAnswers()" class="{{screenSize == SMALL_DEVICE ? 'myform-sm' : 'myform'}}">
         <mat-form-field floatLabel="never">
-            <input matInput formControlName="searchWords" placeholder="Search (english words only)" autocomplete="off" autofocus class="main-input" maxlength="199">
+            <input matInput formControlName="searchWords" placeholder="Search (english words only)" autocomplete="off" autofocus class="main-input" maxlength="199" minlength="4" (ngModelChange)="getAutoComplete()" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" panelOpen="'true'" (optionSelected)="optionSelectedOnAutoComplete($event.option.value)">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
         </mat-form-field>
         <button mat-icon-button type="submit">
             <mat-icon>search</mat-icon>
