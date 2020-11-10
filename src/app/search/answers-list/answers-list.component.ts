@@ -197,8 +197,9 @@ export class AnswersListComponent extends TemplateComponent implements OnInit {
   private getQuestions(){
     this.searchedItems.forEach(item => {
       if (item.question == undefined) {
-        console.log("getQuestions");
-        if ((this.page * this.itemsPerPage) >= this.searchedItems.filter(x => x.originId == OriginEnum.STACK_OVERFLOW).length && item.originId == OriginEnum.STACK_OVERFLOW) return;
+        console.log("getQuestions " + this.page + " * " + (this.itemsPerPage + 2) + " <= " + (this.searchedItems.filter(x => x.originId == OriginEnum.STACK_OVERFLOW && x.wasHTTPRequested).length));
+        if ((this.page * this.itemsPerPage + 1) <= (this.searchedItems.filter(x => x.originId == OriginEnum.STACK_OVERFLOW && x.wasHTTPRequested).length) && item.originId == OriginEnum.STACK_OVERFLOW) return;
+        item.wasHTTPRequested = true;
         setTimeout(() => { this.getQuestionHTTP(item) }, this.timeInterval);
         this.timeInterval = this.timeInterval + 4300;
         console.log("Intervalo: " + this.timeInterval);

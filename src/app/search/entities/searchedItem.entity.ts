@@ -11,4 +11,5 @@ export class SearchedItem {
     public displayLink: string;
     public searchInterfaceId: SearchInterfaceEnum;
     public originId: OriginEnum;
+    public wasHTTPRequested: boolean = false;
 }
