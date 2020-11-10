@@ -50,6 +50,7 @@ export class TemplatSearcheComponent extends TemplateComponent{
                 }
             }, err => {
                 console.log(err);
+                this.autocompleteOptions = new Array<string>();
             });
         }
     }
@@ -81,6 +82,23 @@ export class TemplatSearcheComponent extends TemplateComponent{
         return true;
     }
 
+    /*
+    private getAutocomplete(){
+        this.myHttp.getAutocompleteData(tempWord).subscribe((res: JSON) => {
+                let results: Array<string> = new Array<string> ();
+                if (res != undefined && res != null) {
+                    let list = res["suggestionGroups"][0]["searchSuggestions"];
+                    list.array.forEach(element => {
+                        results.push(element["displayText"]);
+                    });
+                }
+                this.autocompleteOptions = results;
+            }, err => {
+                console.log(err);
+                this.autocompleteOptions = new Array<string>();
+            });
+    }
+    */
 }
 
 

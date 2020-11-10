@@ -15,6 +15,10 @@ export class ModalService {
     //dialogConfig.height = "94%";
     //dialogConfig.width = "99%";
     dialogConfig.maxWidth = "90vw";
+
+    dialogConfig.minWidth = "300px";
+    dialogConfig.minHeight = "200px";
+    
     return dialogConfig;
   }
 

@@ -137,9 +137,11 @@ export class AnswersListComponent extends TemplateComponent implements OnInit {
       if (a.searchInterfaceId > b.searchInterfaceId) {
         return 1;
       }
+      /*
       if (b.question.matchesAmount > a.question.matchesAmount){
         return 1;
       }
+      */
       if (a.searchInterfaceId < b.searchInterfaceId) {
         return -1;
       }
@@ -195,6 +197,8 @@ export class AnswersListComponent extends TemplateComponent implements OnInit {
   private getQuestions(){
     this.searchedItems.forEach(item => {
       if (item.question == undefined) {
+        console.log("getQuestions");
+        if ((this.page * this.itemsPerPage) >= this.searchedItems.filter(x => x.originId == OriginEnum.STACK_OVERFLOW).length && item.originId == OriginEnum.STACK_OVERFLOW) return;
         setTimeout(() => { this.getQuestionHTTP(item) }, this.timeInterval);
         this.timeInterval = this.timeInterval + 4300;
         console.log("Intervalo: " + this.timeInterval);
@@ -203,8 +207,6 @@ export class AnswersListComponent extends TemplateComponent implements OnInit {
   }
 
   getQuestionHTTP(item: SearchedItem){
-    console.log("getQuestionHTTP");
-    if ((this.page * this.itemsPerPage) <= this.searchedItems.filter(x => x.originId == OriginEnum.STACK_OVERFLOW).length) return;
     console.log("getQuestionHTTP (enter)");
     this.myHttp.getQuestion(item.originId, item.questionElementId, item.searchInterfaceId, this.arrayKeyWords, false, this.completeSentence, this.userSearchId, this.userSesionId).subscribe((res: Question) => {
       if (res == null || res == undefined) {
@@ -232,6 +234,7 @@ export class AnswersListComponent extends TemplateComponent implements OnInit {
   public changePage(event){
     this.page = event;
     console.log("page: " + event);
+    this.timeInterval = 20;
     this.getQuestions();
   }
 

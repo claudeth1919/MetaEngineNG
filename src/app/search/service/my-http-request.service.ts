@@ -38,7 +38,14 @@ export class MyHttpRequestService {
   getAutocompleteWords(searchWords: string): any{
     return this.httpClient.get<any>(`${this.userInteractionApi}/autocomplete/${searchWords}`);
   }
-
+/*
+  getAutocompleteData(searchWords: string){
+    const headers = new HttpHeaders();
+    headers.append('Accept', 'application/json');
+    headers.append("Ocp-Apim-Subscription-Key", atob("Yjk5Yjk2ZWM4NjhlNDM5YTlhYTI3YjgyY2JiZDQxNWI="));
+    return this.httpClient.get<any>(`https://api.bing.microsoft.com/v7.0/suggestions?q=${searchWords}&mkt=en-us`, { 'headers': headers });
+  }
+*/
   updateQuestionInteraction(questionId: string, interactionType: InteractionTypeEnum, userSearchId: Guid, userSesionId: Guid): any {
     const headers = new HttpHeaders();
     headers.append('Accept', 'application/json');
